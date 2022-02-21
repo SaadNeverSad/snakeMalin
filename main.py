@@ -56,7 +56,7 @@ class Snake(QtWidgets.QWidget):
                 self.lastKeyPress = 'LEFT'
             elif e.key() == Qt.Key_Right and self.lastKeyPress != 'RIGHT' and self.lastKeyPress != 'LEFT':
                 self.direction("RIGHT")
-                self.lastKeyPress = 'LEFT'
+                self.lastKeyPress = 'RIGHT'
             elif e.key() == Qt.Key_P:
                 self.pause()
         elif e.key() == Qt.Key_P:
