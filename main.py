@@ -17,9 +17,9 @@ class Snake(QtWidgets.QWidget):
         self.isPaused = False
         self.foody = 0
         self.foodx = 0
-        self.y = 36
-        self.x = 12
-        self.snakeArray = [[self.x, self.y], [self.x - 12, self.y], [self.x - 24, self.y]]
+        self.y = self.squareSize * 4
+        self.x = self.squareSize
+        self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize*2, self.y]]
         self.timer = QtCore.QBasicTimer()
         self.score = 0
         self.lastKeyPress = 'RIGHT'
