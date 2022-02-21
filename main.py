@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt
 class Snake(QtWidgets.QWidget):
     def __init__(self):
         super(Snake, self).__init__()
+        self.windowSize = 900
         self.speed = 100
         self.FoodPlaced = False
         self.isOver = False
@@ -25,7 +26,7 @@ class Snake(QtWidgets.QWidget):
     def initUI(self):
         self.newGame()
         self.setStyleSheet("QWidget { background: #A9F5D0 }")
-        self.setFixedSize(300, 300)
+        self.setFixedSize(self.windowSize, self.windowSize)
         self.setWindowTitle('Snake')
         self.show()
 
@@ -99,7 +100,7 @@ class Snake(QtWidgets.QWidget):
     def scoreBoard(self, qp):
         qp.setPen(Qt.NoPen)
         qp.setBrush(QtGui.QColor(25, 80, 0, 160))
-        qp.drawRect(0, 0, 300, 24)
+        qp.drawRect(0, 0, 900, 24)
 
     def scoreText(self, event, qp):
         qp.setPen(QtGui.QColor(255, 255, 255))
@@ -116,7 +117,7 @@ class Snake(QtWidgets.QWidget):
         qp.drawText(80, 170, "press space to play again")
 
     def checkStatus(self, x, y):
-        if y > 288 or x > 288 or x < 0 or y < 24:
+        if y > 888 or x > 888 or x < 0 or y < 24:
             self.pause()
             self.isPaused = True
             self.isOver = True
