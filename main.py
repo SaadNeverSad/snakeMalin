@@ -9,6 +9,7 @@ class Snake(QtWidgets.QWidget):
     def __init__(self):
         super(Snake, self).__init__()
         self.windowSize = 900
+        self.squareSize = 24
         self.speed = 100
         self.FoodPlaced = False
         self.isOver = False
@@ -80,27 +81,27 @@ class Snake(QtWidgets.QWidget):
         self.update()
 
     def direction(self, dir):
-        if dir == "DOWN" and self.checkStatus(self.x, self.y + 12):
-            self.y += 12
+        if dir == "DOWN" and self.checkStatus(self.x, self.y + self.squareSize):
+            self.y += self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "UP" and self.checkStatus(self.x, self.y - 12):
-            self.y -= 12
+        elif dir == "UP" and self.checkStatus(self.x, self.y - self.squareSize):
+            self.y -= self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "RIGHT" and self.checkStatus(self.x + 12, self.y):
-            self.x += 12
+        elif dir == "RIGHT" and self.checkStatus(self.x + self.squareSize, self.y):
+            self.x += self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "LEFT" and self.checkStatus(self.x - 12, self.y):
-            self.x -= 12
+        elif dir == "LEFT" and self.checkStatus(self.x - self.squareSize, self.y):
+            self.x -= self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
 
     def scoreBoard(self, qp):
         qp.setPen(Qt.NoPen)
         qp.setBrush(QtGui.QColor(25, 80, 0, 160))
-        qp.drawRect(0, 0, 900, 24)
+        qp.drawRect(0, 0, 900, self.squareSize)
 
     def scoreText(self, event, qp):
         qp.setPen(QtGui.QColor(255, 255, 255))
@@ -117,7 +118,7 @@ class Snake(QtWidgets.QWidget):
         qp.drawText(80, 170, "press space to play again")
 
     def checkStatus(self, x, y):
-        if y > 888 or x > 888 or x < 0 or y < 24:
+        if y > 888 or x > 888 or x < 0 or y < self.squareSize:
             self.pause()
             self.isPaused = True
             self.isOver = True
@@ -141,19 +142,19 @@ class Snake(QtWidgets.QWidget):
     # places the food when theres none on the board
     def placeFood(self, qp):
         if not self.FoodPlaced:
-            self.foodx = randrange(24) * 12
-            self.foody = randrange(2, 24) * 12
+            self.foodx = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            self.foody = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
             if not [self.foodx, self.foody] in self.snakeArray:
-                self.FoodPlaced = True;
+                self.FoodPlaced = True
         qp.setBrush(QtGui.QColor(80, 180, 0, 160))
-        qp.drawRect(self.foodx, self.foody, 12, 12)
+        qp.drawRect(self.foodx, self.foody, self.squareSize, self.squareSize)
 
     # draws each component of the snake
     def drawSnake(self, qp):
         qp.setPen(Qt.NoPen)
         qp.setBrush(QtGui.QColor(255, 80, 0, 255))
         for i in self.snakeArray:
-            qp.drawRect(i[0], i[1], 12, 12)
+            qp.drawRect(i[0], i[1], self.squareSize, self.squareSize)
 
     # game thread
     def timerEvent(self, event):
