@@ -19,7 +19,6 @@ class Snake(QtWidgets.QWidget):
         self.snakeArray = [[self.x, self.y], [self.x - 12, self.y], [self.x - 24, self.y]]
         self.timer = QtCore.QBasicTimer()
         self.score = 0
-        self.lastKeyPress = 'RIGHT'
         self.highscore = 0
         self.initUI()
 
@@ -55,6 +54,7 @@ class Snake(QtWidgets.QWidget):
                 self.lastKeyPress = 'LEFT'
             elif e.key() == Qt.Key_Right and self.lastKeyPress != 'RIGHT' and self.lastKeyPress != 'LEFT':
                 self.direction("RIGHT")
+                self.lastKeyPress = 'RIGHT'
             elif e.key() == Qt.Key_P:
                 self.pause()
         elif e.key() == Qt.Key_P:
