@@ -1,6 +1,4 @@
 #!/usr/bin/python
-
-# TEST OMG STYLE
 import sys
 from random import randrange
 
