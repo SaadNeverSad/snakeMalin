@@ -12,11 +12,16 @@ class Snake(QtWidgets.QWidget):
         self.windowSize = 900
         self.squareSize = 24
         self.speed = 100
-        self.FoodPlaced = False
+        self.Food1Placed = False
+        self.Food1Type = "Pomme"
+        self.Food2Placed = False
+        self.Food2Type = "Pomme"
         self.isOver = False
         self.isPaused = False
-        self.foody = 0
-        self.foodx = 0
+        self.food1y = 0
+        self.food1x = 0
+        self.food2y = 0
+        self.food2x = 0
         self.y = self.squareSize * 4
         self.x = self.squareSize
         self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize*2, self.y]]
@@ -37,7 +42,7 @@ class Snake(QtWidgets.QWidget):
     def paintEvent(self, event):
         self.qp.begin(self)
         self.scoreBoard()
-        self.placeFood(self.qp)
+        self.placeFood()
         self.drawSnake(self.qp)
         self.scoreText(event)
         if self.isOver:
@@ -129,9 +134,13 @@ class Snake(QtWidgets.QWidget):
             self.isPaused = True
             self.isOver = True
             return False
-        elif self.y == self.foody and self.x == self.foodx:
-            self.FoodPlaced = False
-            self.score += 1
+        elif self.y == self.food1y and self.x == self.food1x:
+            self.Food1Placed = False
+            self.score += self.getScoreType(1)
+            return True
+        elif self.y == self.food2y and self.x == self.food2x:
+            self.Food2Placed = False
+            self.score += self.getScoreType(2)
             return True
         elif self.score >= 573:
             print("you win!")
@@ -141,14 +150,39 @@ class Snake(QtWidgets.QWidget):
         return True
 
     # places the food when theres none on the board
-    def placeFood(self, qp):
-        if not self.FoodPlaced:
-            self.foodx = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
-            self.foody = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
-            if not [self.foodx, self.foody] in self.snakeArray:
-                self.FoodPlaced = True
-        qp.setBrush(QtGui.QColor(80, 180, 0, 160))
-        qp.drawRect(self.foodx, self.foody, self.squareSize, self.squareSize)
+    def placeFood(self):
+        if not self.Food1Placed:
+            self.food1x = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            self.food1y = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            rand = randrange(1, 3)
+            if rand == 2:
+                self.Food1Type = "Pomme"
+            else:
+                self.Food1Type = "Cerise"
+            if not [self.food1x, self.food1y] in self.snakeArray:
+                self.Food1Placed = True
+        if not self.Food2Placed:
+            self.food2x = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            self.food2y = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            rand = randrange(1, 3)
+            if rand == 2:
+                self.Food2Type = "Pomme"
+            else:
+                self.Food2Type = "Cerise"
+            if not [self.food2x, self.food2y] in self.snakeArray:
+                self.Food2Placed = True
+
+        if self.Food1Type == "Pomme":
+            self.qp.setBrush(QtGui.QColor(80, 180, 0, 160))
+        else:
+            self.qp.setBrush(QtGui.QColor(255, 0, 0, 160))
+        self.qp.drawRect(self.food1x, self.food1y, self.squareSize, self.squareSize)
+
+        if self.Food2Type == "Pomme":
+            self.qp.setBrush(QtGui.QColor(80, 180, 0, 160))
+        else:
+            self.qp.setBrush(QtGui.QColor(255, 0, 0, 160))
+        self.qp.drawRect(self.food2x, self.food2y, self.squareSize, self.squareSize)
 
     # draws each component of the snake
     def drawSnake(self, qp):
@@ -164,7 +198,18 @@ class Snake(QtWidgets.QWidget):
             self.repaint()
         else:
             QtWidgets.QFrame.timerEvent(self, event)
-
+            
+    def getScoreType(self, number):
+        if number == 1:
+            if self.Food1Type == "Pomme":
+                return 1
+            if self.Food1Type == "Cerise":
+                return 5
+        if number == 2:
+            if self.Food2Type == "Pomme":
+                return 1
+            if self.Food2Type == "Cerise":
+                return 5
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
