@@ -8,10 +8,22 @@ from PyQt5.QtCore import Qt
 class Snake(QtWidgets.QWidget):
     def __init__(self):
         super(Snake, self).__init__()
+        self.speed = 100
+        self.FoodPlaced = False
+        self.isOver = False
+        self.isPaused = False
+        self.foody = 0
+        self.foodx = 0
+        self.y = 36
+        self.x = 12
+        self.snakeArray = [[self.x, self.y], [self.x - 12, self.y], [self.x - 24, self.y]]
+        self.timer = QtCore.QBasicTimer()
+        self.score = 0
+        self.lastKeyPress = 'RIGHT'
+        self.highscore = 0
         self.initUI()
 
     def initUI(self):
-        self.highscore = 0
         self.newGame()
         self.setStyleSheet("QWidget { background: #A9F5D0 }")
         self.setFixedSize(300, 300)
@@ -43,7 +55,6 @@ class Snake(QtWidgets.QWidget):
                 self.lastKeyPress = 'LEFT'
             elif e.key() == Qt.Key_Right and self.lastKeyPress != 'RIGHT' and self.lastKeyPress != 'LEFT':
                 self.direction("RIGHT")
-                self.lastKeyPress = 'RIGHT'
             elif e.key() == Qt.Key_P:
                 self.pause()
         elif e.key() == Qt.Key_P:
@@ -54,18 +65,7 @@ class Snake(QtWidgets.QWidget):
             self.close()
 
     def newGame(self):
-        self.score = 0
-        self.x = 12
-        self.y = 36
         self.lastKeyPress = 'RIGHT'
-        self.timer = QtCore.QBasicTimer()
-        self.snakeArray = [[self.x, self.y], [self.x - 12, self.y], [self.x - 24, self.y]]
-        self.foodx = 0
-        self.foody = 0
-        self.isPaused = False
-        self.isOver = False
-        self.FoodPlaced = False
-        self.speed = 100
         self.start()
 
     def pause(self):
@@ -79,19 +79,19 @@ class Snake(QtWidgets.QWidget):
         self.update()
 
     def direction(self, dir):
-        if (dir == "DOWN" and self.checkStatus(self.x, self.y + 12)):
+        if dir == "DOWN" and self.checkStatus(self.x, self.y + 12):
             self.y += 12
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif (dir == "UP" and self.checkStatus(self.x, self.y - 12)):
+        elif dir == "UP" and self.checkStatus(self.x, self.y - 12):
             self.y -= 12
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif (dir == "RIGHT" and self.checkStatus(self.x + 12, self.y)):
+        elif dir == "RIGHT" and self.checkStatus(self.x + 12, self.y):
             self.x += 12
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif (dir == "LEFT" and self.checkStatus(self.x - 12, self.y)):
+        elif dir == "LEFT" and self.checkStatus(self.x - 12, self.y):
             self.x -= 12
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
@@ -131,8 +131,7 @@ class Snake(QtWidgets.QWidget):
             self.score += 1
             return True
         elif self.score >= 573:
-            print
-            "you win!"
+            print("you win!")
 
         self.snakeArray.pop()
 
@@ -140,7 +139,7 @@ class Snake(QtWidgets.QWidget):
 
     # places the food when theres none on the board
     def placeFood(self, qp):
-        if self.FoodPlaced == False:
+        if not self.FoodPlaced:
             self.foodx = randrange(24) * 12
             self.foody = randrange(2, 24) * 12
             if not [self.foodx, self.foody] in self.snakeArray:
