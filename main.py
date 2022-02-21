@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 from random import randrange
+
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt
 
@@ -21,6 +22,7 @@ class Snake(QtWidgets.QWidget):
         self.snakeArray = [[self.x, self.y], [self.x - 12, self.y], [self.x - 24, self.y]]
         self.timer = QtCore.QBasicTimer()
         self.score = 0
+        self.lastKeyPress = 'RIGHT'
         self.highscore = 0
         self.initUI()
 
