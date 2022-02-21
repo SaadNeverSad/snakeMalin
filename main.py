@@ -13,6 +13,9 @@ class Snake(QtWidgets.QWidget):
         self.squareSize = 24
         self.speed = 100
         self.FoodPlaced = False
+        self.rocks = []
+        self.rocksGenerated = False
+        self.rockNumber = 30  # number of rocks to be generated
         self.isOver = False
         self.isPaused = False
         self.foody = 0
@@ -38,6 +41,7 @@ class Snake(QtWidgets.QWidget):
         self.qp.begin(self)
         self.scoreBoard()
         self.placeFood(self.qp)
+        self.drawRocks(self.qp)
         self.drawSnake(self.qp)
         self.scoreText(event)
         if self.isOver:
@@ -74,6 +78,9 @@ class Snake(QtWidgets.QWidget):
         self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
         self.lastKeyPress = 'RIGHT'
         self.score = 0
+        if not self.rocksGenerated:
+            print("ZEBI")
+            self.generateRocks(self.rockNumber)
         self.start()
 
     def pause(self):
@@ -119,6 +126,12 @@ class Snake(QtWidgets.QWidget):
         self.highscore = max(self.highscore, self.score)
 
     def checkStatus(self, x, y):
+        for rock in self.rocks:
+            if x == rock["x"] and y == rock["y"]:
+                self.pause()
+                self.isPaused = True
+                self.isOver = True
+                return False
         if y > self.windowSize - self.squareSize or x > self.windowSize - self.squareSize or x < 0 or y < self.squareSize:
             self.pause()
             self.isPaused = True
@@ -139,6 +152,20 @@ class Snake(QtWidgets.QWidget):
         self.snakeArray.pop()
 
         return True
+
+    # generates n rocks
+    def generateRocks(self, n=10):
+        for i in range(n):
+            rock = {"x": randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize,
+                    "y": randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize}
+            self.rocks.append(rock)
+        self.rocksGenerated = True
+
+    def drawRocks(self, qp):
+        qp.setBrush(QtGui.QColor(45, 45, 45, 255))
+        # Draw rocks on the map
+        for rock in self.rocks:
+            qp.drawRect(rock["x"], rock["y"], self.squareSize, self.squareSize)
 
     # places the food when theres none on the board
     def placeFood(self, qp):
