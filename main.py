@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 from random import randrange
+
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt
 
@@ -55,6 +56,7 @@ class Snake(QtWidgets.QWidget):
                 self.lastKeyPress = 'LEFT'
             elif e.key() == Qt.Key_Right and self.lastKeyPress != 'RIGHT' and self.lastKeyPress != 'LEFT':
                 self.direction("RIGHT")
+                self.lastKeyPress = 'LEFT'
             elif e.key() == Qt.Key_P:
                 self.pause()
         elif e.key() == Qt.Key_P:
@@ -143,7 +145,7 @@ class Snake(QtWidgets.QWidget):
             self.foodx = randrange(24) * 12
             self.foody = randrange(2, 24) * 12
             if not [self.foodx, self.foody] in self.snakeArray:
-                self.FoodPlaced = True;
+                self.FoodPlaced = True
         qp.setBrush(QtGui.QColor(80, 180, 0, 160))
         qp.drawRect(self.foodx, self.foody, 12, 12)
 
