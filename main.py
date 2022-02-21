@@ -119,7 +119,7 @@ class Snake(QtWidgets.QWidget):
         self.highscore = max(self.highscore, self.score)
 
     def checkStatus(self, x, y):
-        if y > 888 or x > 888 or x < 0 or y < self.squareSize:
+        if y > self.windowSize - self.squareSize or x > self.windowSize - self.squareSize or x < 0 or y < self.squareSize:
             self.pause()
             self.isPaused = True
             self.isOver = True
