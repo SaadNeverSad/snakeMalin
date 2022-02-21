@@ -79,7 +79,6 @@ class Snake(QtWidgets.QWidget):
         self.lastKeyPress = 'RIGHT'
         self.score = 0
         if not self.rocksGenerated:
-            print("ZEBI")
             self.generateRocks(self.rockNumber)
         self.start()
 
