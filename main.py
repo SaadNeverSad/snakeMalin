@@ -13,7 +13,7 @@ class Snake(QtWidgets.QWidget):
         # Game parameters
         self.windowSize = 900  # size of the gui window, in pixel
         self.squareSize = 24  # size of one position, in pixel
-        self.speed = 100  # length of the delay between each move in ms (lower --> faster)
+        self.speed = 500  # length of the delay between each move in ms (lower --> faster)
         self.isPaused = False  # set to True if the game is paused
         self.isOver = False  # set to True if the game is over
         self.timer = QtCore.QBasicTimer()  # used to track the time
@@ -165,10 +165,20 @@ class Snake(QtWidgets.QWidget):
         elif self.y == self.food1y and self.x == self.food1x:
             self.Food1Placed = False
             self.score += self.getScoreType(1)
+
+            # Make the snake grow
+            for i in range(self.getScoreType(1)):
+                self.snakeArray.insert(i, [self.x, self.y])
+            self.snakeArray.pop()
             return True
         elif self.y == self.food2y and self.x == self.food2x:
             self.Food2Placed = False
             self.score += self.getScoreType(2)
+
+            # Make the snake grow
+            for i in range(self.getScoreType(2)):
+                self.snakeArray.insert(i, [self.x, self.y])
+            self.snakeArray.pop()
             return True
         elif self.score >= 573:
             print("you win!")
