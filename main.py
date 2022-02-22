@@ -22,7 +22,7 @@ class Snake(QtWidgets.QWidget):
 
         # Entities attributes
         self.rocks = []  # array containing every rock (obstacle) on the terrain
-        self.rockNumber = 30  # number of rocks to be generated
+        self.rockNumber = 50  # number of rocks to be generated
         self.rocksGenerated = False  # set to True when rocks have been generated
         self.Food1Placed, self.Food2Placed = False, False  # set to True when food has been placed
         self.Food1Type, self.Food2Type = "Pomme", "Pomme"  # the type of Food1 (either Pomme or Cerise)
@@ -204,8 +204,16 @@ class Snake(QtWidgets.QWidget):
     # places the food when theres none on the board
     def placeFood(self):
         if not self.Food1Placed:
+
             self.food1x = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
             self.food1y = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+
+            # Make sure the food does not spawn on a rock
+            for rock in self.rocks:
+                if self.food1x == rock["x"] and self.food1y == rock["y"]:
+                    print("je voulais placer en " + str(self.food1x) + ", " + str(self.food1y) + "bro....\n")
+                    self.placeFood()
+
             rand = randrange(1, 3)
             if rand == 2:
                 self.Food1Type = "Pomme"
@@ -216,6 +224,13 @@ class Snake(QtWidgets.QWidget):
         if not self.Food2Placed:
             self.food2x = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
             self.food2y = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+
+            # Make sure the food does not spawn on a rock
+            for rock in self.rocks:
+                if self.food2x == rock["x"] and self.food2y == rock["y"]:
+                    print("je voulais placer en " + str(self.food2x) + ", " + str(self.food2y) + "bro....\n")
+                    self.placeFood()
+
             rand = randrange(1, 3)
             if rand == 2:
                 self.Food2Type = "Pomme"
