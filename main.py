@@ -211,7 +211,6 @@ class Snake(QtWidgets.QWidget):
             # Make sure the food does not spawn on a rock
             for rock in self.rocks:
                 if self.food1x == rock["x"] and self.food1y == rock["y"]:
-                    print("je voulais placer en " + str(self.food1x) + ", " + str(self.food1y) + "bro....\n")
                     self.placeFood()
 
             rand = randrange(1, 3)
@@ -228,7 +227,6 @@ class Snake(QtWidgets.QWidget):
             # Make sure the food does not spawn on a rock
             for rock in self.rocks:
                 if self.food2x == rock["x"] and self.food2y == rock["y"]:
-                    print("je voulais placer en " + str(self.food2x) + ", " + str(self.food2y) + "bro....\n")
                     self.placeFood()
 
             rand = randrange(1, 3)
