@@ -19,6 +19,7 @@ class Snake(QtWidgets.QWidget):
         self.timer = QtCore.QBasicTimer()  # used to track the time
         self.highscore = 0
         self.lastKeyPress = 'RIGHT'  # initial direction taken by the snake
+        self.safeZone = 15  # zone in which no rocks will be generated at spawn (number of positions)
 
         # Entities attributes
         self.rocks = []  # array containing every rock (obstacle) on the terrain
@@ -192,6 +193,11 @@ class Snake(QtWidgets.QWidget):
         for i in range(n):
             rock = {"x": randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize,
                     "y": randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize}
+
+            # Make a safe zone with no rocks in the spawn
+            while rock["x"] < self.squareSize * self.safeZone and rock["y"] < self.squareSize * self.safeZone:
+                rock = {"x": randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize,
+                        "y": randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize}
             self.rocks.append(rock)
         self.rocksGenerated = True
 
