@@ -13,7 +13,7 @@ class Snake(QtWidgets.QWidget):
         # Game parameters
         self.windowSize = 900  # size of the gui window, in pixel
         self.squareSize = 24  # size of one position, in pixel
-        self.speed = 500  # length of the delay between each move in ms (lower --> faster)
+        self.speed = 100  # length of the delay between each move in ms (lower --> faster)
         self.isPaused = False  # set to True if the game is paused
         self.isOver = False  # set to True if the game is over
         self.timer = QtCore.QBasicTimer()  # used to track the time
