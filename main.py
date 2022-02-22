@@ -9,23 +9,26 @@ from PyQt5.QtCore import Qt
 class Snake(QtWidgets.QWidget):
     def __init__(self, x, y, s, paint):
         super(Snake, self).__init__()
-        self.windowSize = 900
-        self.squareSize = 24
-        self.speed = 100
-        self.Food1Placed = False
-        self.Food1Type = "Pomme"
-        self.Food2Placed = False
-        self.Food2Type = "Pomme"
-        self.rocks = []
-        self.rocksGenerated = False
-        self.rockNumber = 30  # number of rocks to be generated
-        self.isOver = False
-        self.isPaused = False
-        self.food1y = 0
-        self.food1x = 0
-        self.food2y = 0
-        self.food2x = 0
 
+        # Game parameters
+        self.windowSize = 900  # size of the gui window, in pixel
+        self.squareSize = 24  # size of one position, in pixel
+        self.speed = 100  # length of the delay between each move in ms (lower --> faster)
+        self.isPaused = False  # set to True if the game is paused
+        self.isOver = False  # set to True if the game is over
+        self.timer = QtCore.QBasicTimer()  # used to track the time
+        self.highscore = 0
+        self.lastKeyPress = 'RIGHT'  # initial direction taken by the snake
+
+        # Entities attributes
+        self.rocks = []  # array containing every rock (obstacle) on the terrain
+        self.rockNumber = 30  # number of rocks to be generated
+        self.rocksGenerated = False  # set to True when rocks have been generated
+        self.Food1Placed, self.Food2Placed = False, False  # set to True when food has been placed
+        self.Food1Type, self.Food2Type = "Pomme", "Pomme"  # the type of Food1 (either Pomme or Cerise)
+        self.food1x, self.food1y, self.food2x, self.food2y = 0, 0, 0, 0  # the position of the food
+
+        # Initialize the spawn point
         if x != -1 & y != -1:
             self.y = self.squareSize * 4
             self.x = self.squareSize
@@ -33,17 +36,16 @@ class Snake(QtWidgets.QWidget):
             self.x = x
             self.y = y
 
+        # Initialize the snake array, which contains the positions occupied by the snake
         self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
-        self.timer = QtCore.QBasicTimer()
-        self.highscore = 0
 
+        # Set the score
         if s != -1:
             self.score = s
         else:
             self.score = 0
 
-        self.lastKeyPress = 'RIGHT'
-
+        # Display the game
         if paint:
             self.qp = QtGui.QPainter()
             self.initUI()
