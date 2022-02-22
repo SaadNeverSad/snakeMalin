@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt
 
 
 class Snake(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, x, y, s, paint):
         super(Snake, self).__init__()
         self.windowSize = 900
         self.squareSize = 24
@@ -21,17 +21,32 @@ class Snake(QtWidgets.QWidget):
         self.rockNumber = 30  # number of rocks to be generated
         self.isOver = False
         self.isPaused = False
-        self.foody = 0
-        self.foodx = 0
-        self.y = self.squareSize * 4
-        self.x = self.squareSize
-        self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize*2, self.y]]
+        self.food1y = 0
+        self.food1x = 0
+        self.food2y = 0
+        self.food2x = 0
+
+        if x != -1 & y != -1:
+            self.y = self.squareSize * 4
+            self.x = self.squareSize
+        else:
+            self.x = x
+            self.y = y
+
+        self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
         self.timer = QtCore.QBasicTimer()
         self.highscore = 0
-        self.gameOverText = ""
-        self.spaceText = ""
-        self.qp = QtGui.QPainter()
-        self.initUI()
+
+        if s != -1:
+            self.score = s
+        else:
+            self.score = 0
+
+        self.lastKeyPress = 'RIGHT'
+
+        if paint:
+            self.qp = QtGui.QPainter()
+            self.initUI()
 
     def initUI(self):
         self.newGame()
@@ -78,6 +93,7 @@ class Snake(QtWidgets.QWidget):
     def newGame(self):
         self.y = self.squareSize * 4
         self.x = self.squareSize
+        # Index: 0 = tête
         self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
         self.lastKeyPress = 'RIGHT'
         self.score = 0
@@ -116,7 +132,7 @@ class Snake(QtWidgets.QWidget):
     def scoreBoard(self):
         self.qp.setPen(Qt.NoPen)
         self.qp.setBrush(QtGui.QColor(25, 80, 0, 160))
-        self.qp.drawRect(0, 0, 900, self.squareSize)
+        self.qp.drawRect(0, 0, self.windowSize, self.squareSize)
 
     def scoreText(self, event):
         self.qp.setPen(QtGui.QColor(255, 255, 255))
@@ -235,9 +251,32 @@ class Snake(QtWidgets.QWidget):
             if self.Food2Type == "Cerise":
                 return 5
 
+    def getNearestFood(self):
+        distFood1 = abs(self.food1x - self.x) + abs(self.food1y - self.y)
+        distFood2 = abs(self.food2x - self.x) + abs(self.food2y - self.y)
+        if distFood1 < distFood2:
+            return [self.food1x, self.food1y, distFood1]
+        else:
+            return [self.food2x, self.food2y, distFood2]
+
+    def getNeighbors(self):
+        result = []
+
+        if self.checkStatus(self.x + 1, self.y):
+            result.append(Snake(self.x + 1, self.y, self.score, False))
+        elif self.checkStatus(self.x - 1, self.y):
+            result.append(Snake(self.x - 1, self.y, self.score, False))
+        elif self.checkStatus(self.x, self.y + 1):
+            result.append(Snake(self.x, self.y + 1, self.score, False))
+        elif self.checkStatus(self.x, self.y - 1):
+            result.append(Snake(self.x, self.y - 1, self.score, False))
+
+        return result
+    
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    ex = Snake()
+    ex = Snake(-1, -1, -1, True)
     sys.exit(app.exec_())
 
 
