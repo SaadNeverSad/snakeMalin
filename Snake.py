@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 
 
 class Snake(QtWidgets.QWidget):
-    def __init__(self, x, y, array, s, terrain, fruits, paint):
+    def __init__(self, x, y, array, s, terrain, fruits, new, paint):
         super(Snake, self).__init__()
 
         # Game parameters
@@ -61,12 +61,13 @@ class Snake(QtWidgets.QWidget):
             self.score = 0
 
         # Display the game
+        if new:
+            self.newGame()
         if paint:
             self.qp = QtGui.QPainter()
             self.initUI()
 
     def initUI(self):
-        self.newGame()
         self.setStyleSheet("QWidget { background: #A9F5D0 }")
         self.setFixedSize(self.windowSize, self.windowSize)
         self.setWindowTitle('Snake')
@@ -83,18 +84,19 @@ class Snake(QtWidgets.QWidget):
             self.gameOver(event)
         self.qp.end()
 
-    #Modifie la derniere touche directionelles selectionné, en interdisant de selectionné la touche inverse de la derniere selectionné
-    #ou applique une des trois fonctions pause (touche P), newGame (touche Space) ou  close (touche Escape)
+        # Modifie la derniere touche directionelles selectionné, en interdisant de selectionné la touche inverse de la derniere selectionné
+        # ou applique une des trois fonctions pause (touche P), newGame (touche Space) ou  close (touche Escape)
+
     def keyPressEvent(self, e):
         if not self.isPaused:
             # print "inflection point: ", self.x, " ", self.y
 
-            #Fleche Haut
+            # Fleche Haut
             if e.key() == Qt.Key_Up and self.lastKeyPress != 'UP' and self.lastKeyPress != 'DOWN':
                 self.direction("UP")
                 self.lastKeyPress = 'UP'
 
-            #Fleche Bas
+            # Fleche Bas
             elif e.key() == Qt.Key_Down and self.lastKeyPress != 'DOWN' and self.lastKeyPress != 'UP':
                 self.direction("DOWN")
                 self.lastKeyPress = 'DOWN'
@@ -333,14 +335,14 @@ class Snake(QtWidgets.QWidget):
     def getNeighbors(self):
         result = []
 
-        if self.checkStatus(self.x + 1, self.y):
-            result.append(Snake(self.x + 1, self.y, self.score, False))
-        elif self.checkStatus(self.x - 1, self.y):
-            result.append(Snake(self.x - 1, self.y, self.score, False))
-        elif self.checkStatus(self.x, self.y + 1):
-            result.append(Snake(self.x, self.y + 1, self.score, False))
-        elif self.checkStatus(self.x, self.y - 1):
-            result.append(Snake(self.x, self.y - 1, self.score, False))
+        if self.checkStatus(self.x + self.squareSize, self.y):
+            result.append(Snake(self.x + self.squareSize, self.y, self.array, self.score, self.rocks, self.fruits, False, False))
+        elif self.checkStatus(self.x - self.squareSize, self.y):
+            result.append(Snake(self.x - self.squareSize, self.y, self.array, self.score, self.rocks, self.fruits, False, False))
+        elif self.checkStatus(self.x, self.y + self.squareSize):
+            result.append(Snake(self.x, self.y + self.squareSize, self.array, self.score, self.rocks, self.fruits, False, False))
+        elif self.checkStatus(self.x, self.y - self.squareSize):
+            result.append(Snake(self.x, self.y - self.squareSize, self.array, self.score, self.rocks, self.fruits, False, False))
 
         return result
 
