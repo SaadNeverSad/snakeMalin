@@ -19,9 +19,10 @@ class Solver:
         def isGoal(self):
             return self.snake.score == (self.snake.windowSize*self.snake.windowSize)
 
-    def __init__(self):
-        self.initialSnake = Snake(-1, -1, -1, False)
+    def __init__(self, snake):
+        self.initialSnake = snake
         self.solution = None
+        self.AStar()
 
     def AStar(self):
         startSearchN = Solver.SearchNode(None, self.initialSnake, 0)
