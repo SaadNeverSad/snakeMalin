@@ -2,7 +2,6 @@ from Snake import Snake
 
 
 class Solver:
-
     class SearchNode:
         def __init__(self, parent, snake, priority):
             self.snake = snake

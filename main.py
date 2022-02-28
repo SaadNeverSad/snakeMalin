@@ -1,7 +1,9 @@
 #!/usr/bin/python
 import sys
-from Snake import Snake
+
 from PyQt5 import QtWidgets
+
+from Snake import Snake
 
 
 def main():
