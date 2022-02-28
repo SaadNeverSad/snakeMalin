@@ -2,23 +2,25 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt
 
 
+class SearchNode:
+    def __init__(self, parent, snake, priority):
+        self.snake = snake
+        self.priority = priority
+        self.parent = parent
+
+    def compareTo(self, otherSearchNode):
+        if self.priority < otherSearchNode.priority:
+            return -1
+        elif self.priority > otherSearchNode.priority:
+            return 1
+        else:
+            return 0
+
+    def isGoal(self):
+        return self.snake.score == 1
+
+
 class Solver(QtWidgets.QWidget):
-    class SearchNode:
-        def __init__(self, parent, snake, priority):
-            self.snake = snake
-            self.priority = priority
-            self.parent = parent
-
-        def compareTo(self, otherSearchNode):
-            if self.priority < otherSearchNode.priority:
-                return -1
-            elif self.priority > otherSearchNode.priority:
-                return 1
-            else:
-                return 0
-
-        def isGoal(self):
-            return self.snake.score == 1
 
     def __init__(self, snake):
         super().__init__()
@@ -28,11 +30,17 @@ class Solver(QtWidgets.QWidget):
         self.qp = QtGui.QPainter()
 
     def AStar(self):
-        startSearchN = Solver.SearchNode(None, self.initialSnake, 0)
+        startSearchN = SearchNode(None, self.initialSnake, 0)
         nodeArray = [startSearchN]
         current = nodeArray.pop()
+        i = 0
         while not current.isGoal():
             self.addNext(nodeArray, current)
+            if i == 10:
+                self.solution = current
+                print(self.solution)
+                break
+            i += 1
         if current.isGoal():
             self.solution = current
 
@@ -41,7 +49,7 @@ class Solver(QtWidgets.QWidget):
             if (not current.parent is None) and (not next.equals(current.parent.snake)):
                 nodeArray.append(Solver.SearchNode(current, next, current.priority + 1))
 
-    def solution(self):
+    def getSolution(self):
         res = []
         current = self.solution
         while current is not None:
@@ -51,7 +59,7 @@ class Solver(QtWidgets.QWidget):
 
     def initUI(self):
         self.setStyleSheet("QWidget { background: #A9F5D0 }")
-        self.setFixedSize(self.snake.windowSize, self.snake.windowSize)
+        self.setFixedSize(self.initialSnake.windowSize, self.initialSnake.windowSize)
         self.setWindowTitle('Snake')
         self.show()
 

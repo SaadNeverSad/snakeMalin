@@ -5,6 +5,7 @@ from PyQt5 import QtWidgets
 
 from Snake import Snake
 from Solver import Solver
+from Solver import SearchNode
 
 
 def main():
@@ -16,15 +17,17 @@ def main():
     # Solve it
     solver = Solver(ex)
 
+    print(solver)
+    solver.initUI()
     print("Found solution !")
 
-    sol = solver.solution()
+    sol = solver.getSolution()
 
     solver.initUI()
 
     for state in sol:
         solver.snake = state
-        solver.qp.repaint()
+        solver.repaint()
 
 
     sys.exit(app.exec_())
