@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 
 
 class Snake(QtWidgets.QWidget):
-    def __init__(self, x, y, s, terrain, paint):
+    def __init__(self, x, y, array, s, terrain, fruits, paint):
         super(Snake, self).__init__()
 
         # Game parameters
@@ -18,11 +18,18 @@ class Snake(QtWidgets.QWidget):
         self.highscore = 0
         self.lastKeyPress = 'RIGHT'  # initial direction taken by the snake
         self.safeZone = 15  # zone in which no rocks will be generated at spawn (number of positions)
+        self.fruits = {}
 
         # Entities attributes
-        self.Food1Placed, self.Food2Placed = False, False  # set to True when food has been placed
-        self.Food1Type, self.Food2Type = "Pomme", "Pomme"  # the type of Food1 (either Pomme or Cerise)
-        self.food1x, self.food1y, self.food2x, self.food2y = 0, 0, 0, 0  # the position of the food
+
+        # Initialize the fruits' positions
+        if fruits == -1:
+            self.fruits["food1_placed"], self.fruits["food2_placed"] = False, False  # set to True when food has been placed
+            self.fruits["food1_type"], self.fruits["food2_type"] = "Pomme", "Pomme"  # the type of Food1 (either Pomme or Cerise)
+            self.fruits["food1_x"], self.fruits["food1_y"], self.fruits["food2_x"], self.fruits["food2_y"] = 0, 0, 0, 0  # the position of the food
+
+        else:
+            self.fruits = fruits
 
         # Initialize the spawn point
         if x == -1 & y == -1:
@@ -42,7 +49,10 @@ class Snake(QtWidgets.QWidget):
             self.rocksGenerated = True
 
         # Initialize the snake array, which contains the positions occupied by the snake
-        self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
+        if array == -1:
+            self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
+        else:
+            self.snakeArray = array
 
         # Set the score
         if s != -1:
@@ -187,8 +197,8 @@ class Snake(QtWidgets.QWidget):
             self.isPaused = True
             self.isOver = True
             return False
-        elif self.y == self.food1y and self.x == self.food1x:
-            self.Food1Placed = False
+        elif self.y == self.fruits["food1_y"] and self.x == self.fruits["food1_x"]:
+            self.fruits["food1_placed"] = False
             self.score += self.getScoreType(1)
 
             # Make the snake grow
@@ -196,8 +206,8 @@ class Snake(QtWidgets.QWidget):
                 self.snakeArray.insert(i, [self.x, self.y])
             self.snakeArray.pop()
             return True
-        elif self.y == self.food2y and self.x == self.food2x:
-            self.Food2Placed = False
+        elif self.y == self.fruits["food2_y"] and self.x == self.fruits["food2_x"]:
+            self.fruits["food2_placed"] = False
             self.score += self.getScoreType(2)
 
             # Make the snake grow
@@ -233,54 +243,54 @@ class Snake(QtWidgets.QWidget):
 
     # places the food when theres none on the board
     def placeFood(self):
-        if not self.Food1Placed:
+        if not self.fruits["food1_placed"]:
 
             #Place the food number 1
-            self.food1x = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            self.fruits["food1_x"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
             #Place the food number 2           
-            self.food1y = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            self.fruits["food1_y"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
 
             # Make sure the food does not spawn on a rock
             for rock in self.rocks:
-                if self.food1x == rock["x"] and self.food1y == rock["y"]:
+                if self.fruits["food1_x"] == rock["x"] and self.fruits["food1_y"] == rock["y"]:
                     self.placeFood()
 
             #Selectionne le type de nourriture de Food1, la pomme a 1/3 d'apparaitre, la Cerise 2/3
             rand = randrange(1, 3)
             if rand == 2:
-                self.Food1Type = "Pomme"
+                self.fruits["food1_type"] = "Pomme"
             else:
-                self.Food1Type = "Cerise"
-            if not [self.food1x, self.food1y] in self.snakeArray:
-                self.Food1Placed = True
-        if not self.Food2Placed:
-            self.food2x = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
-            self.food2y = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+                self.fruits["food1_type"] = "Cerise"
+            if not [self.fruits["food1_x"], self.fruits["food1_y"]] in self.snakeArray:
+                self.fruits["food1_placed"] = True
+        if not self.fruits["food2_placed"]:
+            self.fruits["food2_x"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            self.fruits["food2_y"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
 
             # Make sure the food does not spawn on a rock
             for rock in self.rocks:
-                if self.food2x == rock["x"] and self.food2y == rock["y"]:
+                if self.fruits["food2_x"] == rock["x"] and self.fruits["food2_y"] == rock["y"]:
                     self.placeFood()
             #Selectionne le type de nourriture de Food2, la pomme a 1/3 d'apparaitre, la Cerise 2/3
             rand = randrange(1, 3)
             if rand == 2:
-                self.Food2Type = "Pomme"
+                self.fruits["food2_type"] = "Pomme"
             else:
-                self.Food2Type = "Cerise"
-            if not [self.food2x, self.food2y] in self.snakeArray:
-                self.Food2Placed = True
+                self.fruits["food2_type"] = "Cerise"
+            if not [self.fruits["food2_x"], self.fruits["food2_y"]] in self.snakeArray:
+                self.fruits["food2_placed"] = True
 
-        if self.Food1Type == "Pomme":
+        if self.fruits["food1_type"] == "Pomme":
             self.qp.setBrush(QtGui.QColor(80, 180, 0, 160)) #Selectionne un carré vert pour la pomme
         else:
             self.qp.setBrush(QtGui.QColor(255, 0, 0, 160)) #Selectionne un carré rouge pour la cerise
-        self.qp.drawRect(self.food1x, self.food1y, self.squareSize, self.squareSize)
+        self.qp.drawRect(self.fruits["food1_x"], self.fruits["food1_y"], self.squareSize, self.squareSize)
 
-        if self.Food2Type == "Pomme":
+        if self.fruits["food2_type"] == "Pomme":
             self.qp.setBrush(QtGui.QColor(80, 180, 0, 160)) #Selectionne un carré vert pour la pomme
         else:
             self.qp.setBrush(QtGui.QColor(255, 0, 0, 160)) #Selectionne un carré rouge pour la cerise
-        self.qp.drawRect(self.food2x, self.food2y, self.squareSize, self.squareSize)
+        self.qp.drawRect(self.fruits["food2_x"], self.fruits["food2_y"], self.squareSize, self.squareSize)
 
     # draws each component of the snake
     def drawSnake(self, qp):
@@ -300,25 +310,25 @@ class Snake(QtWidgets.QWidget):
     #Recupere le score associé a chacun des deux fruits
     def getScoreType(self, number):
         if number == 1:
-            if self.Food1Type == "Pomme":
+            if self.fruits["food1_type"] == "Pomme":
                 return 1
-            if self.Food1Type == "Cerise":
+            if self.fruits["food1_type"] == "Cerise":
                 return 5
         if number == 2:
-            if self.Food2Type == "Pomme":
+            if self.fruits["food2_type"] == "Pomme":
                 return 1
-            if self.Food2Type == "Cerise":
+            if self.fruits["food2_type"] == "Cerise":
                 return 5
 
     #Renvoie la position de la nourriture la plus proche ainsi que la distance a laquelle la tete de notre serpent est de cette nourriture
     def getNearestFood(self):
-        distFood1 = abs(self.food1x - self.x) + abs(self.food1y - self.y)
-        distFood2 = abs(self.food2x - self.x) + abs(self.food2y - self.y)
+        distFood1 = abs(self.fruits["food1_x"] - self.x) + abs(self.fruits["food1_y"] - self.y)
+        distFood2 = abs(self.fruits["food2_x"] - self.x) + abs(self.fruits["food2_y"] - self.y)
         if distFood1 < distFood2:
-            print([self.food1x, self.food1y, distFood1])
-            return [self.food1x, self.food1y, distFood1]
+            print([self.fruits["food1_x"], self.fruits["food1_y"], distFood1])
+            return [self.fruits["food1_x"], self.fruits["food1_y"], distFood1]
         else:
-            return [self.food2x, self.food2y, distFood2]
+            return [self.fruits["food2_x"], self.fruits["food2_y"], distFood2]
 
     def getNeighbors(self):
         result = []
@@ -334,5 +344,11 @@ class Snake(QtWidgets.QWidget):
 
         return result
 
-    def getTerrain(self):
+    def get_terrain(self):
         return self.rocks
+
+    def get_array(self):
+        return self.snakeArray
+
+    def get_fruits(self):
+        return self.fruits

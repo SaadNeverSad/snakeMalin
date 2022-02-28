@@ -9,7 +9,7 @@ from Snake import Snake
 def main():
     # Create a snake game
     app = QtWidgets.QApplication(sys.argv)
-    ex = Snake(-1, -1, -1, -1, True)
+    ex = Snake(-1, -1, -1, -1, -1, -1, True)
 
     # Solve it
     # solver = Solver(ex)
