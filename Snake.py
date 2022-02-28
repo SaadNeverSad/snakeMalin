@@ -354,3 +354,6 @@ class Snake(QtWidgets.QWidget):
 
     def get_fruits(self):
         return self.fruits
+
+    def equals(self, snake):
+        return self.fruits == snake.fruits and self.x == snake.x and self.y == snake.y and self.rocks == snake.rocks and self.snakeArray == snake.snakeArray and self.score == snake.score

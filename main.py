@@ -23,7 +23,6 @@ def main():
         solver.snake = state
         solver.qp.repaint()
 
-
     sys.exit(app.exec_())
 
 

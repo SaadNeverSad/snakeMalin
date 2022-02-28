@@ -38,7 +38,7 @@ class Solver(QtWidgets.QWidget):
 
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
-            if not next.equals(current.parent.snake):
+            if (not current.parent is None) and (not next.equals(current.parent.snake)):
                 nodeArray.append(Solver.SearchNode(current, next, current.priority + 1))
 
     def solution(self):
