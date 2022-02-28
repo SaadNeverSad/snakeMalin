@@ -1,6 +1,3 @@
-from Snake import Snake
-
-
 class Solver:
     class SearchNode:
         def __init__(self, parent, snake, priority):
@@ -35,13 +32,13 @@ class Solver:
 
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
-            if not next.equals(current.parent.Snake):
+            if not next.equals(current.parent.snake):
                 nodeArray.append(Solver.SearchNode(current, next, current.priority + 1))
 
     def solution(self):
         res = []
         current = self.solution
         while current is not None:
-            res.append(current.Snake)
+            res.append(current.snake)
             current = current.parent
         return res

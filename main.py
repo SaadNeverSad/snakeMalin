@@ -4,7 +4,6 @@ import sys
 from PyQt5 import QtWidgets
 
 from Snake import Snake
-from Solver import Solver
 
 
 def main():
