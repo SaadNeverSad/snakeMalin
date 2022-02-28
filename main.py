@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import time
 
 from PyQt5 import QtWidgets
 
@@ -27,6 +28,7 @@ def main():
 
     for state in sol:
         solver.snake = state
+        time.sleep(1)
         solver.repaint()
 
 

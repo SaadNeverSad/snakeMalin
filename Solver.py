@@ -69,9 +69,9 @@ class Solver(QtWidgets.QWidget):
         self.drawRocks()
         self.drawFood()
         self.drawSnake()
-        self.scoreText(event)
-        if self.isOver:
-            self.gameOver(event)
+        self.scoreText()
+        if self.initialSnake.isOver:
+            self.gameOver()
         self.qp.end()
 
     def direction(self, dir):
@@ -113,17 +113,17 @@ class Solver(QtWidgets.QWidget):
             self.qp.drawRect(rock["x"], rock["y"], self.snake.squareSize, self.snake.squareSize)
 
     def drawFood(self):
-        if self.snake.Food1Type == "Pomme":
+        if self.snake.fruits["food1_type"] == "Pomme":
             self.qp.setBrush(QtGui.QColor(80, 180, 0, 160))
         else:
             self.qp.setBrush(QtGui.QColor(255, 0, 0, 160))
-        self.qp.drawRect(self.snake.food1x, self.snake.food1y, self.snake.squareSize, self.snake.squareSize)
+        self.qp.drawRect(self.snake.fruits["food1_x"], self.snake.fruits["food1_y"], self.snake.squareSize, self.snake.squareSize)
 
-        if self.snake.Food2Type == "Pomme":
+        if self.snake.fruits["food2_type"] == "Pomme":
             self.qp.setBrush(QtGui.QColor(80, 180, 0, 160))
         else:
             self.qp.setBrush(QtGui.QColor(255, 0, 0, 160))
-        self.qp.drawRect(self.snake.food2x, self.snake.food2y, self.snake.squareSize, self.snake.squareSize)
+        self.qp.drawRect(self.snake.fruits["food2_x"], self.snake.fruits["food2_y"], self.snake.squareSize, self.snake.squareSize)
 
     # draws each component of the snake
     def drawSnake(self):
