@@ -25,7 +25,7 @@ class Snake(QtWidgets.QWidget):
         self.food1x, self.food1y, self.food2x, self.food2y = 0, 0, 0, 0  # the position of the food
 
         # Initialize the spawn point
-        if x != -1 & y != -1:
+        if x == -1 & y == -1:
             self.y = self.squareSize * 4
             self.x = self.squareSize
         else:
