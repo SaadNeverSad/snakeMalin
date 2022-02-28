@@ -32,7 +32,7 @@ class Snake(QtWidgets.QWidget):
             self.fruits = fruits
 
         # Initialize the spawn point
-        if x == -1 & y == -1:
+        if x == -1 and y == -1:
             self.y = self.squareSize * 4
             self.x = self.squareSize
         else:
@@ -46,6 +46,7 @@ class Snake(QtWidgets.QWidget):
             self.rocksGenerated = False  # set to True when rocks have been generated
         else:
             self.rocks = terrain
+            self.rockNumber = 50  # number of rocks to be generated
             self.rocksGenerated = True
 
         # Initialize the snake array, which contains the positions occupied by the snake
@@ -339,16 +340,17 @@ class Snake(QtWidgets.QWidget):
         if self.checkStatus(self.x + self.squareSize, self.y):
             new_array.insert(0, [self.x + self.squareSize, self.y])
             result.append(Snake(self.x + self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
-        elif self.checkStatus(self.x - self.squareSize, self.y):
+        if self.checkStatus(self.x - self.squareSize, self.y):
             new_array.insert(0, [self.x - self.squareSize, self.y])
             result.append(Snake(self.x - self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
-        elif self.checkStatus(self.x, self.y + self.squareSize):
+        if self.checkStatus(self.x, self.y + self.squareSize):
             new_array.insert(0, [self.x, self.y + self.squareSize])
             result.append(Snake(self.x, self.y + self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
-        elif self.checkStatus(self.x, self.y - self.squareSize):
+        if self.checkStatus(self.x, self.y - self.squareSize):
             new_array.insert(0, [self.x, self.y - self.squareSize])
             result.append(Snake(self.x, self.y - self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
 
+        print(result)
         return result
 
     def get_terrain(self):

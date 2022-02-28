@@ -18,7 +18,7 @@ class Solver(QtWidgets.QWidget):
                 return 0
 
         def isGoal(self):
-            return self.snake.score == (self.snake.windowSize*self.snake.windowSize)
+            return self.snake.score == 1
 
     def __init__(self, snake):
         super().__init__()
