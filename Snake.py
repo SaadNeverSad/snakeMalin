@@ -326,13 +326,13 @@ class Snake(QtWidgets.QWidget):
         result = []
 
         if self.checkStatus(self.x + 1, self.y):
-            result.append(Snake(self.x + 1, self.y, self.score, False))
+            result.append(Snake(self.x + 1, self.y, self.score, False, False, False))
         elif self.checkStatus(self.x - 1, self.y):
-            result.append(Snake(self.x - 1, self.y, self.score, False))
+            result.append(Snake(self.x - 1, self.y, self.score, False, False, False))
         elif self.checkStatus(self.x, self.y + 1):
-            result.append(Snake(self.x, self.y + 1, self.score, False))
+            result.append(Snake(self.x, self.y + 1, self.score, False, False, False))
         elif self.checkStatus(self.x, self.y - 1):
-            result.append(Snake(self.x, self.y - 1, self.score, False))
+            result.append(Snake(self.x, self.y - 1, self.score, False, False, False))
 
         return result
 
