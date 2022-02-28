@@ -336,13 +336,13 @@ class Snake(QtWidgets.QWidget):
         result = []
 
         if self.checkStatus(self.x + self.squareSize, self.y):
-            result.append(Snake(self.x + self.squareSize, self.y, self.array, self.score, self.rocks, self.fruits, False, False))
+            result.append(Snake(self.x + self.squareSize, self.y, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
         elif self.checkStatus(self.x - self.squareSize, self.y):
-            result.append(Snake(self.x - self.squareSize, self.y, self.array, self.score, self.rocks, self.fruits, False, False))
+            result.append(Snake(self.x - self.squareSize, self.y, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
         elif self.checkStatus(self.x, self.y + self.squareSize):
-            result.append(Snake(self.x, self.y + self.squareSize, self.array, self.score, self.rocks, self.fruits, False, False))
+            result.append(Snake(self.x, self.y + self.squareSize, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
         elif self.checkStatus(self.x, self.y - self.squareSize):
-            result.append(Snake(self.x, self.y - self.squareSize, self.array, self.score, self.rocks, self.fruits, False, False))
+            result.append(Snake(self.x, self.y - self.squareSize, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
 
         return result
 
