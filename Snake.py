@@ -1,6 +1,7 @@
+from random import randrange
+
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt
-from random import randrange
 
 
 class Snake(QtWidgets.QWidget):
@@ -300,4 +301,3 @@ class Snake(QtWidgets.QWidget):
             result.append(Snake(self.x, self.y - 1, self.score, False))
 
         return result
-
