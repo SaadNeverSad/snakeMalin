@@ -12,6 +12,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     ex = Snake(-1, -1, -1, -1, True, False)
 
+
     # Solve it
     solver = Solver(ex)
 
@@ -22,6 +23,7 @@ def main():
     for state in sol:
         solver.snake = state
         solver.qp.repaint()
+
 
     sys.exit(app.exec_())
 

@@ -57,7 +57,6 @@ class Snake(QtWidgets.QWidget):
             self.initUI()
 
     def initUI(self):
-        self.newGame()
         self.setStyleSheet("QWidget { background: #A9F5D0 }")
         self.setFixedSize(self.windowSize, self.windowSize)
         self.setWindowTitle('Snake')
@@ -326,13 +325,13 @@ class Snake(QtWidgets.QWidget):
         result = []
 
         if self.checkStatus(self.x + 1, self.y):
-            result.append(Snake(self.x + 1, self.y, self.score, False, False, False))
+            result.append(Snake(self.x + 1, self.y, self.score, -1, False, False))
         elif self.checkStatus(self.x - 1, self.y):
-            result.append(Snake(self.x - 1, self.y, self.score, False, False, False))
+            result.append(Snake(self.x - 1, self.y, self.score, -1, False, False))
         elif self.checkStatus(self.x, self.y + 1):
-            result.append(Snake(self.x, self.y + 1, self.score, False, False, False))
+            result.append(Snake(self.x, self.y + 1, self.score, -1, False, False))
         elif self.checkStatus(self.x, self.y - 1):
-            result.append(Snake(self.x, self.y - 1, self.score, False, False, False))
+            result.append(Snake(self.x, self.y - 1, self.score, -1, False, False))
 
         return result
 
