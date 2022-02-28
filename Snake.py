@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 
 
 class Snake(QtWidgets.QWidget):
-    def __init__(self, x, y, s, paint):
+    def __init__(self, x, y, s, terrain, paint):
         super(Snake, self).__init__()
 
         # Game parameters
@@ -20,9 +20,6 @@ class Snake(QtWidgets.QWidget):
         self.safeZone = 15  # zone in which no rocks will be generated at spawn (number of positions)
 
         # Entities attributes
-        self.rocks = []  # array containing every rock (obstacle) on the terrain
-        self.rockNumber = 50  # number of rocks to be generated
-        self.rocksGenerated = False  # set to True when rocks have been generated
         self.Food1Placed, self.Food2Placed = False, False  # set to True when food has been placed
         self.Food1Type, self.Food2Type = "Pomme", "Pomme"  # the type of Food1 (either Pomme or Cerise)
         self.food1x, self.food1y, self.food2x, self.food2y = 0, 0, 0, 0  # the position of the food
@@ -34,6 +31,15 @@ class Snake(QtWidgets.QWidget):
         else:
             self.x = x
             self.y = y
+
+        # Initialize terrain
+        if terrain == -1:
+            self.rocks = []  # array containing every rock (obstacle) on the terrain
+            self.rockNumber = 50  # number of rocks to be generated
+            self.rocksGenerated = False  # set to True when rocks have been generated
+        else:
+            self.rocks = terrain
+            self.rocksGenerated = True
 
         # Initialize the snake array, which contains the positions occupied by the snake
         self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
@@ -301,3 +307,6 @@ class Snake(QtWidgets.QWidget):
             result.append(Snake(self.x, self.y - 1, self.score, False))
 
         return result
+
+    def getTerrain(self):
+        return self.rocks
