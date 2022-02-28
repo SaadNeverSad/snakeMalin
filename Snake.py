@@ -334,15 +334,20 @@ class Snake(QtWidgets.QWidget):
 
     def getNeighbors(self):
         result = []
+        new_array = self.snakeArray
 
         if self.checkStatus(self.x + self.squareSize, self.y):
-            result.append(Snake(self.x + self.squareSize, self.y, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
+            new_array.insert(0, [self.x + self.squareSize, self.y])
+            result.append(Snake(self.x + self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
         elif self.checkStatus(self.x - self.squareSize, self.y):
-            result.append(Snake(self.x - self.squareSize, self.y, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
+            new_array.insert(0, [self.x - self.squareSize, self.y])
+            result.append(Snake(self.x - self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
         elif self.checkStatus(self.x, self.y + self.squareSize):
-            result.append(Snake(self.x, self.y + self.squareSize, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
+            new_array.insert(0, [self.x, self.y + self.squareSize])
+            result.append(Snake(self.x, self.y + self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
         elif self.checkStatus(self.x, self.y - self.squareSize):
-            result.append(Snake(self.x, self.y - self.squareSize, self.snakeArray, self.score, self.rocks, self.fruits, False, False))
+            new_array.insert(0, [self.x, self.y - self.squareSize])
+            result.append(Snake(self.x, self.y - self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
 
         return result
 
