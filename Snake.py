@@ -143,7 +143,7 @@ class Snake(QtWidgets.QWidget):
 
     def scoreText(self, event):
         self.qp.setPen(QtGui.QColor(255, 255, 255))
-        self.qp.setFont(QtGui.QFont('Decorative', 10))
+        self.qp.setFont(QtGui.QFont('Arial', 10))
         self.qp.drawText(8, 17, "SCORE: " + str(self.score))
         self.qp.drawText(195, 17, "HIGHSCORE: " + str(self.highscore))
 
