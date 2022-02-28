@@ -25,8 +25,7 @@ class Solver:
 
     def AStar(self):
         startSearchN = Solver.SearchNode(None, self.initialSnake, 0)
-        nodeArray = []
-        nodeArray.insert(startSearchN)
+        nodeArray = [startSearchN]
         current = nodeArray.pop()
         while not current.isGoal():
             self.addNext(nodeArray, current)
@@ -36,7 +35,7 @@ class Solver:
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
             if not next.equals(current.parent.Snake):
-                nodeArray.insert(Solver.SearchNode(current, next, current.priority + 1))
+                nodeArray.append(Solver.SearchNode(current, next, current.priority + 1))
 
     def solution(self):
         res = []
@@ -45,4 +44,3 @@ class Solver:
             res.append(current.Snake)
             current = current.parent
         return res
-    
