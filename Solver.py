@@ -30,8 +30,19 @@ class Solver:
         current = nodeArray.pop()
         while not current.isGoal():
             self.addNext(nodeArray, current)
+        if current.isGoal():
+            self.solution = current
 
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
             if not next.equals(current.parent.Snake):
                 nodeArray.insert(Solver.SearchNode(current, next, current.priority + 1))
+
+    def solution(self):
+        res = []
+        current = self.solution
+        while current is not None:
+            res.append(current.Snake)
+            current = current.parent
+        return res
+    
