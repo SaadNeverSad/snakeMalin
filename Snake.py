@@ -1,7 +1,7 @@
 from random import randrange
 
 
-class Snake():
+class Snake:
     def __init__(self, x, y, s, terrain, new):
         super(Snake, self).__init__()
 
@@ -141,7 +141,6 @@ class Snake():
                 self.Food2Type = "Cerise"
             if not [self.food2x, self.food2y] in self.snakeArray:
                 self.Food2Placed = True
-
 
     def getScoreType(self, number):
         if number == 1:

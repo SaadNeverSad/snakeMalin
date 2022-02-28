@@ -4,6 +4,7 @@ import sys
 from PyQt5 import QtWidgets
 
 from Snake import Snake
+from Solver import Solver
 
 
 def main():
@@ -12,7 +13,16 @@ def main():
     ex = Snake(-1, -1, -1, -1, True)
 
     # Solve it
-    # solver = Solver(ex)
+    solver = Solver(ex)
+
+    sol = solver.solution()
+
+    solver.initUI()
+
+    for state in sol:
+        solver.snake = state
+        solver.qp.repaint()
+
     sys.exit(app.exec_())
 
 
