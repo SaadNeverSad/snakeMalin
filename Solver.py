@@ -56,7 +56,7 @@ class Solver(QtWidgets.QWidget):
             if (current.parent is None) or (not next.equals(current.parent.snake)):
                 nearestFood = current.snake.getNearestFood()
                 print("Nearest food selected: " + str(nearestFood[2]))
-                nodeArray.append(SearchNode(current, next, current.priority + nearestFood[2]))
+                nodeArray.append(SearchNode(current, next, current.priority + 1/nearestFood[2]))
 
     def getSolution(self):
         res = []
