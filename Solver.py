@@ -39,14 +39,20 @@ class Solver(QtWidgets.QWidget):
             max = 0
             maxNode = None
             for node in nodeArray:
+                print("Node priority: " + str(node.priority))
                 if node.priority > max:
+                    print("Node selected: " + str(node.priority))
                     max = node.priority
                     maxNode = node
             for node in nodeArray:
                 if node is maxNode:
                     current = nodeArray.pop()
                     break
-            if i == 10:
+            nearestFood = current.snake.getNearestFood()
+            print("Current position: " + str(current.snake.x) + ", " + str(current.snake.y))
+            print("Nearest food selected: " + str(nearestFood[2]))
+            print("Priority: " + str(current.priority))
+            if i == 5:
                 self.solution = current
                 break
             i += 1
@@ -56,9 +62,9 @@ class Solver(QtWidgets.QWidget):
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
             if (current.parent is None) or (not next.equals(current.parent.snake)):
-                nearestFood = current.snake.getNearestFood()
-                print("Nearest food selected: " + str(nearestFood[2]))
-                nodeArray.append(SearchNode(current, next, current.priority + 1/nearestFood[2]))
+                nearestFood = next.getNearestFood()
+                priority = (1/nearestFood[2]) * 10000
+                nodeArray.append(SearchNode(current, next, priority))
 
     def getSolution(self):
         res = []
@@ -66,7 +72,6 @@ class Solver(QtWidgets.QWidget):
         while current is not None:
             res.append(current.snake)
             current = current.parent
-        print("senior")
         print(res)
         return res
 

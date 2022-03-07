@@ -334,7 +334,6 @@ class Snake(QtWidgets.QWidget):
         distFood1 = abs(self.fruits["food1_x"] - self.x) + abs(self.fruits["food1_y"] - self.y)
         distFood2 = abs(self.fruits["food2_x"] - self.x) + abs(self.fruits["food2_y"] - self.y)
         if distFood1 < distFood2:
-            print([self.fruits["food1_x"], self.fruits["food1_y"], distFood1])
             return [self.fruits["food1_x"], self.fruits["food1_y"], distFood1]
         else:
             return [self.fruits["food2_x"], self.fruits["food2_y"], distFood2]
