@@ -189,18 +189,18 @@ class Snake(QtWidgets.QWidget):
         for rock in self.rocks:
             if x == rock["x"] and y == rock["y"]:
                 self.pause()
-                self.isPaused = True
-                self.isOver = True
+                #self.isPaused = True
+                #self.isOver = True
                 return False
         if y > self.windowSize - self.squareSize or x > self.windowSize - self.squareSize or x < 0 or y < self.squareSize:
             self.pause()
-            self.isPaused = True
-            self.isOver = True
+            #self.isPaused = True
+            #self.isOver = True
             return False
         elif self.snakeArray[0] in self.snakeArray[1:len(self.snakeArray)]:
             self.pause()
-            self.isPaused = True
-            self.isOver = True
+            #self.isPaused = True
+            #self.isOver = True
             return False
         elif self.y == self.fruits["food1_y"] and self.x == self.fruits["food1_x"]:
             self.fruits["food1_placed"] = False
@@ -342,6 +342,7 @@ class Snake(QtWidgets.QWidget):
         result = []
         new_array = self.snakeArray
 
+        # and self.x + self.squareSize not in self.snakeArray
         if self.checkStatus(self.x + self.squareSize, self.y):
             new_array.insert(0, [self.x + self.squareSize, self.y])
             result.append(Snake(self.x + self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
