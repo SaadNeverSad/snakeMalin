@@ -1,3 +1,4 @@
+import copy
 from random import randrange
 
 from PyQt5 import QtWidgets, QtCore, QtGui
@@ -34,7 +35,7 @@ class Snake(QtWidgets.QWidget):
         # Initialize the spawn point
         if x == -1 and y == -1:
             self.y = self.squareSize * 4
-            self.x = self.squareSize
+            self.x = self.squareSize * 4
         else:
             self.x = x
             self.y = y
@@ -51,9 +52,9 @@ class Snake(QtWidgets.QWidget):
 
         # Initialize the snake array, which contains the positions occupied by the snake
         if array == -1:
-            self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
+            self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - (self.squareSize * 2), self.y]]
         else:
-            self.snakeArray = array
+            self.snakeArray = array.copy()
 
         # Set the score
         if s != -1:
@@ -127,8 +128,6 @@ class Snake(QtWidgets.QWidget):
 
     #Create a new game
     def newGame(self):
-        self.y = self.squareSize * 4
-        self.x = self.squareSize
         # Index: 0 = tête
         self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
         self.lastKeyPress = 'RIGHT'
@@ -197,7 +196,7 @@ class Snake(QtWidgets.QWidget):
             #self.isPaused = True
             #self.isOver = True
             return False
-        elif self.snakeArray[0] in self.snakeArray[1:len(self.snakeArray)]:
+        elif [x, y] in self.snakeArray[0:len(self.snakeArray)]:
             #self.pause()
             #self.isPaused = True
             #self.isOver = True
@@ -210,7 +209,6 @@ class Snake(QtWidgets.QWidget):
             # Make the snake grow
             #for i in range(self.getScoreType(1)):
             self.snakeArray.insert(0, [self.x, self.y])
-            self.snakeArray.pop()
             return True
         elif self.y == self.fruits["food2_y"] and self.x == self.fruits["food2_x"]:
             self.fruits["food2_placed"] = False
@@ -218,14 +216,12 @@ class Snake(QtWidgets.QWidget):
             self.placeFood()
 
             # Make the snake grow
-            for i in range(self.getScoreType(2)):
-                self.snakeArray.insert(i, [self.x, self.y])
-            self.snakeArray.pop()
+            #for i in range(self.getScoreType(2)):
+            self.snakeArray.insert(0, [self.x, self.y])
             return True
         elif self.score >= 573:
             print("you win!")
 
-        self.snakeArray.pop()
 
         return True
 
@@ -338,22 +334,27 @@ class Snake(QtWidgets.QWidget):
 
     def getNeighbors(self):
         result = []
-        new_array = self.snakeArray
 
-        dummies = [self, self, self, self]
-
-        if dummies[0].checkStatus(dummies[0].x + dummies[0].squareSize, dummies[0].y):
-            new_array.insert(0, [dummies[0].x + dummies[0].squareSize, dummies[0].y])
-            result.append(Snake(dummies[0].x + dummies[0].squareSize, dummies[0].y, new_array, dummies[0].score, dummies[0].rocks, dummies[0].fruits, False, False))
-        if dummies[1].checkStatus(dummies[1].x - dummies[1].squareSize, dummies[1].y):
-            new_array.insert(0, [dummies[1].x - dummies[1].squareSize, dummies[1].y])
-            result.append(Snake(dummies[1].x - dummies[1].squareSize, dummies[1].y, new_array, dummies[1].score, dummies[1].rocks, dummies[1].fruits, False, False))
-        if dummies[2].checkStatus(dummies[2].x, dummies[2].y + dummies[2].squareSize):
-            new_array.insert(0, [dummies[2].x, dummies[2].y + dummies[2].squareSize])
-            result.append(Snake(dummies[2].x, dummies[2].y + dummies[2].squareSize, new_array, dummies[2].score, dummies[2].rocks, dummies[2].fruits, False, False))
-        if dummies[3].checkStatus(dummies[3].x, dummies[3].y - dummies[3].squareSize):
-            new_array.insert(0, [dummies[3].x, dummies[3].y - dummies[3].squareSize])
-            result.append(Snake(dummies[3].x, dummies[3].y - dummies[3].squareSize, new_array, dummies[3].score, dummies[3].rocks, dummies[3].fruits, False, False))
+        if self.checkStatus(self.x + self.squareSize, self.y):
+            new_array = copy.deepcopy(self.snakeArray)
+            new_array.pop()
+            new_array.insert(0, [self.x + self.squareSize, self.y])
+            result.append(Snake(self.x + self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
+        if self.checkStatus(self.x - self.squareSize, self.y):
+            new_array = copy.deepcopy(self.snakeArray)
+            new_array.pop()
+            new_array.insert(0, [self.x - self.squareSize, self.y])
+            result.append(Snake(self.x - self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
+        if self.checkStatus(self.x, self.y + self.squareSize):
+            new_array = copy.deepcopy(self.snakeArray)
+            new_array.pop()
+            new_array.insert(0, [self.x, self.y + self.squareSize])
+            result.append(Snake(self.x, self.y + self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
+        if self.checkStatus(self.x, self.y - self.squareSize):
+            new_array = copy.deepcopy(self.snakeArray)
+            new_array.pop()
+            new_array.insert(0, [self.x, self.y - self.squareSize])
+            result.append(Snake(self.x, self.y - self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
 
         return result
 
