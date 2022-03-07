@@ -68,6 +68,8 @@ class Snake(QtWidgets.QWidget):
             self.qp = QtGui.QPainter()
             self.initUI()
 
+        self.placeFood()
+
     def initUI(self):
         self.setStyleSheet("QWidget { background: #A9F5D0 }")
         self.setFixedSize(self.windowSize, self.windowSize)
@@ -204,6 +206,8 @@ class Snake(QtWidgets.QWidget):
             self.fruits["food1_placed"] = False
             self.score += self.getScoreType(1)
 
+            self.placeFood()
+
             # Make the snake grow
             for i in range(self.getScoreType(1)):
                 self.snakeArray.insert(i, [self.x, self.y])
@@ -212,6 +216,8 @@ class Snake(QtWidgets.QWidget):
         elif self.y == self.fruits["food2_y"] and self.x == self.fruits["food2_x"]:
             self.fruits["food2_placed"] = False
             self.score += self.getScoreType(2)
+
+            self.placeFood()
 
             # Make the snake grow
             for i in range(self.getScoreType(2)):
@@ -283,17 +289,17 @@ class Snake(QtWidgets.QWidget):
             if not [self.fruits["food2_x"], self.fruits["food2_y"]] in self.snakeArray:
                 self.fruits["food2_placed"] = True
 
-        if self.fruits["food1_type"] == "Pomme":
-            self.qp.setBrush(QtGui.QColor(80, 180, 0, 160)) #Selectionne un carré vert pour la pomme
-        else:
-            self.qp.setBrush(QtGui.QColor(255, 0, 0, 160)) #Selectionne un carré rouge pour la cerise
-        self.qp.drawRect(self.fruits["food1_x"], self.fruits["food1_y"], self.squareSize, self.squareSize)
-
-        if self.fruits["food2_type"] == "Pomme":
-            self.qp.setBrush(QtGui.QColor(80, 180, 0, 160)) #Selectionne un carré vert pour la pomme
-        else:
-            self.qp.setBrush(QtGui.QColor(255, 0, 0, 160)) #Selectionne un carré rouge pour la cerise
-        self.qp.drawRect(self.fruits["food2_x"], self.fruits["food2_y"], self.squareSize, self.squareSize)
+        # if self.fruits["food1_type"] == "Pomme":
+        #     self.qp.setBrush(QtGui.QColor(80, 180, 0, 160)) #Selectionne un carré vert pour la pomme
+        # else:
+        #     self.qp.setBrush(QtGui.QColor(255, 0, 0, 160)) #Selectionne un carré rouge pour la cerise
+        # self.qp.drawRect(self.fruits["food1_x"], self.fruits["food1_y"], self.squareSize, self.squareSize)
+        #
+        # if self.fruits["food2_type"] == "Pomme":
+        #     self.qp.setBrush(QtGui.QColor(80, 180, 0, 160)) #Selectionne un carré vert pour la pomme
+        # else:
+        #     self.qp.setBrush(QtGui.QColor(255, 0, 0, 160)) #Selectionne un carré rouge pour la cerise
+        # self.qp.drawRect(self.fruits["food2_x"], self.fruits["food2_y"], self.squareSize, self.squareSize)
 
     # draws each component of the snake
     def drawSnake(self, qp):
