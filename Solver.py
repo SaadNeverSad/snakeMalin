@@ -17,7 +17,8 @@ class SearchNode:
             return 0
 
     def isGoal(self):
-        return self.snake.score > 2
+        return self.snake.score > 10
+
 
 
 class Solver(QtWidgets.QWidget):
@@ -37,7 +38,6 @@ class Solver(QtWidgets.QWidget):
         while not current.isGoal():
             self.addNext(nodeArray, current)
             max = 0
-            maxNode = None
             index = 0
             maxNodeIndex = 0
             for node in nodeArray:
@@ -55,7 +55,7 @@ class Solver(QtWidgets.QWidget):
             for block in current.snake.snakeArray:
                 print(str(block))
             print("\n")
-            if i == 100:
+            if i == 100000:
                 self.solution = current
                 break
             i += 1
@@ -66,7 +66,7 @@ class Solver(QtWidgets.QWidget):
         for next in current.snake.getNeighbors():
             if (current.parent is None) or (not next.equals(current.parent.snake)):
                 nearestFood = next.getNearestFood()
-                priority = ((1/(nearestFood[2]+1))) * 10000
+                priority = ((1/(nearestFood[2]+1))) + next.score * 10000
                 nodeArray.append(SearchNode(current, next, priority))
 
     def getSolution(self):

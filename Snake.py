@@ -69,7 +69,7 @@ class Snake(QtWidgets.QWidget):
             self.qp = QtGui.QPainter()
             self.initUI()
 
-        self.placeFood()
+        self.placeFood(self.snakeArray, self.fruits, self.rocks)
 
     def initUI(self):
         self.setStyleSheet("QWidget { background: #A9F5D0 }")
@@ -151,19 +151,19 @@ class Snake(QtWidgets.QWidget):
     #Modifie la direction dans laquelle notre serpent va en fonction de notre derniere touche directionelle selectionné
     #Et redessine notre serpent sur la grille
     def direction(self, dir):
-        if dir == "DOWN" and self.checkStatus(self.x, self.y + self.squareSize):
+        if dir == "DOWN" and self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks):
             self.y += self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "UP" and self.checkStatus(self.x, self.y - self.squareSize):
+        elif dir == "UP" and self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks):
             self.y -= self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "RIGHT" and self.checkStatus(self.x + self.squareSize, self.y):
+        elif dir == "RIGHT" and self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks):
             self.x += self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "LEFT" and self.checkStatus(self.x - self.squareSize, self.y):
+        elif dir == "LEFT" and self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks):
             self.x -= self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
@@ -184,46 +184,20 @@ class Snake(QtWidgets.QWidget):
     def gameOver(self, event):
         self.highscore = max(self.highscore, self.score)
 
-    def checkStatus(self, x, y):
-        for rock in self.rocks:
+    def checkStatus(self, x, y, snakeArray, fruits, rocks):
+        for rock in rocks:
             if x == rock["x"] and y == rock["y"]:
-                #self.pause()
-                #self.isPaused = True
-                #self.isOver = True
-                return False
+                return 0
         if y > self.windowSize - self.squareSize or x > self.windowSize - self.squareSize or x < 0 or y < self.squareSize:
-            #self.pause()
-            #self.isPaused = True
-            #self.isOver = True
-            return False
-        elif [x, y] in self.snakeArray[0:len(self.snakeArray)]:
-            #self.pause()
-            #self.isPaused = True
-            #self.isOver = True
-            return False
-        elif self.y == self.fruits["food1_y"] and self.x == self.fruits["food1_x"]:
-            self.fruits["food1_placed"] = False
-            self.score += self.getScoreType(1)
-            self.placeFood()
+            return 0
+        elif [x, y] in snakeArray[0:len(snakeArray)]:
+            return 0
+        elif y == fruits["food1_y"] and x == fruits["food1_x"]:
+            return 10
+        elif y == fruits["food2_y"] and x == fruits["food2_x"]:
+            return 20
 
-            # Make the snake grow
-            #for i in range(self.getScoreType(1)):
-            self.snakeArray.insert(0, [self.x, self.y])
-            return True
-        elif self.y == self.fruits["food2_y"] and self.x == self.fruits["food2_x"]:
-            self.fruits["food2_placed"] = False
-            self.score += self.getScoreType(2)
-            self.placeFood()
-
-            # Make the snake grow
-            #for i in range(self.getScoreType(2)):
-            self.snakeArray.insert(0, [self.x, self.y])
-            return True
-        elif self.score >= 573:
-            print("you win!")
-
-
-        return True
+        return 1
 
     # generates n rocks
     def generateRocks(self, n=10):
@@ -245,43 +219,43 @@ class Snake(QtWidgets.QWidget):
             qp.drawRect(rock["x"], rock["y"], self.squareSize, self.squareSize)
 
     # places the food when theres none on the board
-    def placeFood(self):
-        if not self.fruits["food1_placed"]:
+    def placeFood(self, snakeArray, fruits, rocks):
+        if not fruits["food1_placed"]:
 
             #Place the food number 1
-            self.fruits["food1_x"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            fruits["food1_x"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
             #Place the food number 2           
-            self.fruits["food1_y"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            fruits["food1_y"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
 
             # Make sure the food does not spawn on a rock
-            for rock in self.rocks:
-                if self.fruits["food1_x"] == rock["x"] and self.fruits["food1_y"] == rock["y"]:
-                    self.placeFood()
+            for rock in rocks:
+                if fruits["food1_x"] == rock["x"] and fruits["food1_y"] == rock["y"]:
+                    self.placeFood(snakeArray, fruits, rocks)
 
             #Selectionne le type de nourriture de Food1, la pomme a 1/3 d'apparaitre, la Cerise 2/3
             rand = randrange(1, 3)
             if rand == 2:
-                self.fruits["food1_type"] = "Pomme"
+                fruits["food1_type"] = "Pomme"
             else:
-                self.fruits["food1_type"] = "Cerise"
-            if not [self.fruits["food1_x"], self.fruits["food1_y"]] in self.snakeArray:
-                self.fruits["food1_placed"] = True
-        if not self.fruits["food2_placed"]:
-            self.fruits["food2_x"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
-            self.fruits["food2_y"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+                fruits["food1_type"] = "Cerise"
+            if not [fruits["food1_x"], fruits["food1_y"]] in snakeArray:
+                fruits["food1_placed"] = True
+        if not fruits["food2_placed"]:
+            fruits["food2_x"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
+            fruits["food2_y"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
 
             # Make sure the food does not spawn on a rock
-            for rock in self.rocks:
-                if self.fruits["food2_x"] == rock["x"] and self.fruits["food2_y"] == rock["y"]:
-                    self.placeFood()
+            for rock in rocks:
+                if fruits["food2_x"] == rock["x"] and fruits["food2_y"] == rock["y"]:
+                    self.placeFood(snakeArray, fruits, rocks)
             #Selectionne le type de nourriture de Food2, la pomme a 1/3 d'apparaitre, la Cerise 2/3
             rand = randrange(1, 3)
             if rand == 2:
-                self.fruits["food2_type"] = "Pomme"
+                fruits["food2_type"] = "Pomme"
             else:
-                self.fruits["food2_type"] = "Cerise"
-            if not [self.fruits["food2_x"], self.fruits["food2_y"]] in self.snakeArray:
-                self.fruits["food2_placed"] = True
+                fruits["food2_type"] = "Cerise"
+            if not [fruits["food2_x"], fruits["food2_y"]] in snakeArray:
+                fruits["food2_placed"] = True
 
         # if self.fruits["food1_type"] == "Pomme":
         #     self.qp.setBrush(QtGui.QColor(80, 180, 0, 160)) #Selectionne un carré vert pour la pomme
@@ -335,26 +309,92 @@ class Snake(QtWidgets.QWidget):
     def getNeighbors(self):
         result = []
 
-        if self.checkStatus(self.x + self.squareSize, self.y):
+        if self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks):
             new_array = copy.deepcopy(self.snakeArray)
-            new_array.pop()
+            new_fruits = copy.deepcopy(self.fruits)
+            new_score = copy.deepcopy(self.score)
+            if self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 10:
+                new_fruits["food1_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+
+            elif self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 20:
+                new_fruits["food2_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+
+            else:
+                new_array.pop()
+
             new_array.insert(0, [self.x + self.squareSize, self.y])
-            result.append(Snake(self.x + self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
-        if self.checkStatus(self.x - self.squareSize, self.y):
+            result.append(Snake(self.x + self.squareSize, self.y, new_array, new_score, self.rocks, new_fruits, False, False))
+
+        if self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks):
             new_array = copy.deepcopy(self.snakeArray)
-            new_array.pop()
+            new_fruits = copy.deepcopy(self.fruits)
+            new_score = copy.deepcopy(self.score)
+            if self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 10:
+                new_fruits["food1_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+
+            elif self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 20:
+                new_fruits["food2_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+
+            else:
+                new_array.pop()
+
             new_array.insert(0, [self.x - self.squareSize, self.y])
-            result.append(Snake(self.x - self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
-        if self.checkStatus(self.x, self.y + self.squareSize):
+            result.append(Snake(self.x - self.squareSize, self.y, new_array, new_score, self.rocks, new_fruits, False, False))
+
+        if self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks):
             new_array = copy.deepcopy(self.snakeArray)
-            new_array.pop()
+            new_fruits = copy.deepcopy(self.fruits)
+            new_score = copy.deepcopy(self.score)
+            if self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks) == 10:
+                new_fruits["food1_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+
+            elif self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks) == 20:
+                new_fruits["food2_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+
+            else:
+                new_array.pop()
+
             new_array.insert(0, [self.x, self.y + self.squareSize])
-            result.append(Snake(self.x, self.y + self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
-        if self.checkStatus(self.x, self.y - self.squareSize):
+            result.append(Snake(self.x, self.y + self.squareSize, new_array, new_score, self.rocks, new_fruits, False, False))
+
+        if self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks):
             new_array = copy.deepcopy(self.snakeArray)
-            new_array.pop()
+            new_fruits = copy.deepcopy(self.fruits)
+            new_score = copy.deepcopy(self.score)
+            if self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks) == 10:
+                new_fruits["food1_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+            elif self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks) == 20:
+                new_fruits["food2_placed"] = False
+                new_score += 1
+                self.placeFood(new_array, new_fruits, self.rocks)
+                print("RACIIIIIIIIIIIIIIIIISME")
+
+            else:
+                new_array.pop()
+
             new_array.insert(0, [self.x, self.y - self.squareSize])
-            result.append(Snake(self.x, self.y - self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
+            result.append(Snake(self.x, self.y - self.squareSize, new_array, new_score, self.rocks, new_fruits, False, False))
 
         return result
 
