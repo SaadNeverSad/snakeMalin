@@ -188,17 +188,17 @@ class Snake(QtWidgets.QWidget):
     def checkStatus(self, x, y):
         for rock in self.rocks:
             if x == rock["x"] and y == rock["y"]:
-                self.pause()
+                #self.pause()
                 #self.isPaused = True
                 #self.isOver = True
                 return False
         if y > self.windowSize - self.squareSize or x > self.windowSize - self.squareSize or x < 0 or y < self.squareSize:
-            self.pause()
+            #self.pause()
             #self.isPaused = True
             #self.isOver = True
             return False
         elif self.snakeArray[0] in self.snakeArray[1:len(self.snakeArray)]:
-            self.pause()
+            #self.pause()
             #self.isPaused = True
             #self.isOver = True
             return False
@@ -208,8 +208,8 @@ class Snake(QtWidgets.QWidget):
             self.placeFood()
 
             # Make the snake grow
-            for i in range(self.getScoreType(1)):
-                self.snakeArray.insert(i, [self.x, self.y])
+            #for i in range(self.getScoreType(1)):
+            self.snakeArray.insert(0, [self.x, self.y])
             self.snakeArray.pop()
             return True
         elif self.y == self.fruits["food2_y"] and self.x == self.fruits["food2_x"]:
@@ -340,19 +340,20 @@ class Snake(QtWidgets.QWidget):
         result = []
         new_array = self.snakeArray
 
-        # and self.x + self.squareSize not in self.snakeArray
-        if self.checkStatus(self.x + self.squareSize, self.y):
-            new_array.insert(0, [self.x + self.squareSize, self.y])
-            result.append(Snake(self.x + self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
-        if self.checkStatus(self.x - self.squareSize, self.y):
-            new_array.insert(0, [self.x - self.squareSize, self.y])
-            result.append(Snake(self.x - self.squareSize, self.y, new_array, self.score, self.rocks, self.fruits, False, False))
-        if self.checkStatus(self.x, self.y + self.squareSize):
-            new_array.insert(0, [self.x, self.y + self.squareSize])
-            result.append(Snake(self.x, self.y + self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
-        if self.checkStatus(self.x, self.y - self.squareSize):
-            new_array.insert(0, [self.x, self.y - self.squareSize])
-            result.append(Snake(self.x, self.y - self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
+        dummies = [self, self, self, self]
+
+        if dummies[0].checkStatus(dummies[0].x + dummies[0].squareSize, dummies[0].y):
+            new_array.insert(0, [dummies[0].x + dummies[0].squareSize, dummies[0].y])
+            result.append(Snake(dummies[0].x + dummies[0].squareSize, dummies[0].y, new_array, dummies[0].score, dummies[0].rocks, dummies[0].fruits, False, False))
+        if dummies[1].checkStatus(dummies[1].x - dummies[1].squareSize, dummies[1].y):
+            new_array.insert(0, [dummies[1].x - dummies[1].squareSize, dummies[1].y])
+            result.append(Snake(dummies[1].x - dummies[1].squareSize, dummies[1].y, new_array, dummies[1].score, dummies[1].rocks, dummies[1].fruits, False, False))
+        if dummies[2].checkStatus(dummies[2].x, dummies[2].y + dummies[2].squareSize):
+            new_array.insert(0, [dummies[2].x, dummies[2].y + dummies[2].squareSize])
+            result.append(Snake(dummies[2].x, dummies[2].y + dummies[2].squareSize, new_array, dummies[2].score, dummies[2].rocks, dummies[2].fruits, False, False))
+        if dummies[3].checkStatus(dummies[3].x, dummies[3].y - dummies[3].squareSize):
+            new_array.insert(0, [dummies[3].x, dummies[3].y - dummies[3].squareSize])
+            result.append(Snake(dummies[3].x, dummies[3].y - dummies[3].squareSize, new_array, dummies[3].score, dummies[3].rocks, dummies[3].fruits, False, False))
 
         return result
 
