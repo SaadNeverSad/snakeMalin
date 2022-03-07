@@ -205,7 +205,6 @@ class Snake(QtWidgets.QWidget):
         elif self.y == self.fruits["food1_y"] and self.x == self.fruits["food1_x"]:
             self.fruits["food1_placed"] = False
             self.score += self.getScoreType(1)
-
             self.placeFood()
 
             # Make the snake grow
@@ -216,7 +215,6 @@ class Snake(QtWidgets.QWidget):
         elif self.y == self.fruits["food2_y"] and self.x == self.fruits["food2_x"]:
             self.fruits["food2_placed"] = False
             self.score += self.getScoreType(2)
-
             self.placeFood()
 
             # Make the snake grow
