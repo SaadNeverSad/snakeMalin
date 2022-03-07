@@ -350,7 +350,6 @@ class Snake(QtWidgets.QWidget):
             new_array.insert(0, [self.x, self.y - self.squareSize])
             result.append(Snake(self.x, self.y - self.squareSize, new_array, self.score, self.rocks, self.fruits, False, False))
 
-        print(result)
         return result
 
     def get_terrain(self):

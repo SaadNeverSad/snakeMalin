@@ -36,9 +36,15 @@ class Solver(QtWidgets.QWidget):
         i = 0
         while not current.isGoal():
             self.addNext(nodeArray, current)
-            if i == 10:
+            max = 0
+            for node in nodeArray:
+                if node.priority > max:
+                    max = node.priority
+            for node in nodeArray:
+                if node.priority is max:
+                    current = nodeArray.pop()
+            if i == 10000:
                 self.solution = current
-                print(self.solution)
                 break
             i += 1
         if current.isGoal():
@@ -46,8 +52,8 @@ class Solver(QtWidgets.QWidget):
 
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
-            if (not current.parent is None) and (not next.equals(current.parent.snake)):
-                nodeArray.append(Solver.SearchNode(current, next, current.priority + 1))
+            if (current.parent is None) or (not next.equals(current.parent.snake)):
+                nodeArray.append(SearchNode(current, next, current.priority + 1))
 
     def getSolution(self):
         res = []
@@ -55,6 +61,8 @@ class Solver(QtWidgets.QWidget):
         while current is not None:
             res.append(current.snake)
             current = current.parent
+        print("senior")
+        print(res)
         return res
 
     def initUI(self):
@@ -117,13 +125,15 @@ class Solver(QtWidgets.QWidget):
             self.qp.setBrush(QtGui.QColor(80, 180, 0, 160))
         else:
             self.qp.setBrush(QtGui.QColor(255, 0, 0, 160))
-        self.qp.drawRect(self.snake.fruits["food1_x"], self.snake.fruits["food1_y"], self.snake.squareSize, self.snake.squareSize)
+        self.qp.drawRect(self.snake.fruits["food1_x"], self.snake.fruits["food1_y"], self.snake.squareSize,
+                         self.snake.squareSize)
 
         if self.snake.fruits["food2_type"] == "Pomme":
             self.qp.setBrush(QtGui.QColor(80, 180, 0, 160))
         else:
             self.qp.setBrush(QtGui.QColor(255, 0, 0, 160))
-        self.qp.drawRect(self.snake.fruits["food2_x"], self.snake.fruits["food2_y"], self.snake.squareSize, self.snake.squareSize)
+        self.qp.drawRect(self.snake.fruits["food2_x"], self.snake.fruits["food2_y"], self.snake.squareSize,
+                         self.snake.squareSize)
 
     # draws each component of the snake
     def drawSnake(self):

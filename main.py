@@ -18,19 +18,16 @@ def main():
     # Solve it
     solver = Solver(ex)
 
-    print(solver)
-    solver.initUI()
     print("Found solution !")
 
     sol = solver.getSolution()
-
     solver.initUI()
+
+    print("Solution:")
+    print(sol)
 
     for state in sol:
         solver.snake = state
-        time.sleep(1)
-        solver.repaint()
-
 
     sys.exit(app.exec_())
 
