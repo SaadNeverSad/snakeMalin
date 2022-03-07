@@ -36,14 +36,15 @@ class Solver(QtWidgets.QWidget):
         i = 0
         while not current.isGoal():
             self.addNext(nodeArray, current)
-            max = 0
+            min = 99999
             for node in nodeArray:
-                if node.priority > max:
-                    max = node.priority
+                if node.priority < min:
+                    min = node.priority
             for node in nodeArray:
-                if node.priority is max:
+                if node.priority is min:
                     current = nodeArray.pop()
-            if i == 10000:
+                    break
+            if i == 10:
                 self.solution = current
                 break
             i += 1
@@ -53,7 +54,8 @@ class Solver(QtWidgets.QWidget):
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
             if (current.parent is None) or (not next.equals(current.parent.snake)):
-                nodeArray.append(SearchNode(current, next, current.priority + 1))
+                nearestFood = current.snake.getNearestFood()
+                nodeArray.append(SearchNode(current, next, current.priority + nearestFood[2]))
 
     def getSolution(self):
         res = []
