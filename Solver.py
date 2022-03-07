@@ -36,12 +36,14 @@ class Solver(QtWidgets.QWidget):
         i = 0
         while not current.isGoal():
             self.addNext(nodeArray, current)
-            min = 99999
+            max = 0
+            maxNode = None
             for node in nodeArray:
-                if node.priority < min:
-                    min = node.priority
+                if node.priority > max:
+                    max = node.priority
+                    maxNode = node
             for node in nodeArray:
-                if node.priority is min:
+                if node is maxNode:
                     current = nodeArray.pop()
                     break
             if i == 10:
