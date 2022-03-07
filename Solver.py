@@ -151,6 +151,13 @@ class Solver(QtWidgets.QWidget):
     # draws each component of the snake
     def drawSnake(self):
         self.qp.setPen(Qt.NoPen)
-        self.qp.setBrush(QtGui.QColor(255, 80, 0, 255))
+        self.qp.setBrush(QtGui.QColor(0, 80, 255, 255))
+        tete = 0
         for i in self.snake.snakeArray:
+            if(tete == 0) :
+                self.qp.setBrush(QtGui.QColor(255, 255, 255, 255))
+                tete = 1
+            else :
+                self.qp.setBrush(QtGui.QColor(0, 80, 255, 255))
+            print("x : " + str(i[0]/self.snake.squareSize) +"\t y : " + str(i[1]/self.snake.squareSize))
             self.qp.drawRect(i[0], i[1], self.snake.squareSize, self.snake.squareSize)
