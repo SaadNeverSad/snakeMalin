@@ -38,19 +38,20 @@ class Solver(QtWidgets.QWidget):
             self.addNext(nodeArray, current)
             max = 0
             maxNode = None
+            index = 0
+            maxNodeIndex = 0
             for node in nodeArray:
                 print("Node priority: " + str(node.priority))
                 if node.priority > max:
                     print("Node selected: " + str(node.priority))
                     max = node.priority
-                    maxNode = node
-            for node in nodeArray:
-                if node is maxNode:
-                    current = nodeArray.pop()
-                    break
+                    maxNodeIndex = index
+                index += 1
+            current = nodeArray[maxNodeIndex]
+            nodeArray.pop(maxNodeIndex)
             nearestFood = current.snake.getNearestFood()
             print("Current position: " + str(current.snake.x) + ", " + str(current.snake.y))
-            print("Nearest food selected: " + str(nearestFood[2]))
+            print("Nearest food selected: " + str(nearestFood[2]) + " at position: " + str(nearestFood[0]) + ", " + str(nearestFood[1]))
             print("Priority: " + str(current.priority))
             if i == 5:
                 self.solution = current
