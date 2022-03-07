@@ -51,6 +51,9 @@ class Solver(QtWidgets.QWidget):
             print("Current position: " + str(current.snake.x) + ", " + str(current.snake.y))
             print("Nearest food selected: " + str(nearestFood[2]) + " at position: " + str(nearestFood[0]) + ", " + str(nearestFood[1]))
             print("Priority: " + str(current.priority) + " Score: " + str(current.snake.score))
+            print("Snake: ")
+            for block in current.snake.snakeArray:
+                print(str(block))
             print("\n")
             if i == 100:
                 self.solution = current
