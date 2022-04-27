@@ -25,9 +25,12 @@ class Snake(QtWidgets.QWidget):
 
         # Initialize the fruits' positions
         if fruits == -1:
-            self.fruits["food1_placed"], self.fruits["food2_placed"] = False, False  # set to True when food has been placed
-            self.fruits["food1_type"], self.fruits["food2_type"] = "Pomme", "Pomme"  # the type of Food1 (either Pomme or Cerise)
-            self.fruits["food1_x"], self.fruits["food1_y"], self.fruits["food2_x"], self.fruits["food2_y"] = 0, 0, 0, 0  # the position of the food
+            self.fruits["food1_placed"], self.fruits[
+                "food2_placed"] = False, False  # set to True when food has been placed
+            self.fruits["food1_type"], self.fruits[
+                "food2_type"] = "Pomme", "Pomme"  # the type of Food1 (either Pomme or Cerise)
+            self.fruits["food1_x"], self.fruits["food1_y"], self.fruits["food2_x"], self.fruits[
+                "food2_y"] = 0, 0, 0, 0  # the position of the food
 
         else:
             self.fruits = fruits
@@ -52,7 +55,8 @@ class Snake(QtWidgets.QWidget):
 
         # Initialize the snake array, which contains the positions occupied by the snake
         if array == -1:
-            self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - (self.squareSize * 2), self.y]]
+            self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y],
+                               [self.x - (self.squareSize * 2), self.y]]
         else:
             self.snakeArray = array.copy()
 
@@ -105,38 +109,37 @@ class Snake(QtWidgets.QWidget):
                 self.direction("DOWN")
                 self.lastKeyPress = 'DOWN'
 
-            #Fleche Gauche
+            # Fleche Gauche
             elif e.key() == Qt.Key_Left and self.lastKeyPress != 'LEFT' and self.lastKeyPress != 'RIGHT':
                 self.direction("LEFT")
                 self.lastKeyPress = 'LEFT'
 
-            #Fleche Droite
+            # Fleche Droite
             elif e.key() == Qt.Key_Right and self.lastKeyPress != 'RIGHT' and self.lastKeyPress != 'LEFT':
                 self.direction("RIGHT")
                 self.lastKeyPress = 'RIGHT'
             elif e.key() == Qt.Key_P:
                 self.pause()
-        #Pause with P
+        # Pause with P
         elif e.key() == Qt.Key_P:
             self.start()
-        #Restart a new game with Space
+        # Restart a new game with Space
         elif e.key() == Qt.Key_Space:
             self.newGame()
-        #Close game with Escape
+        # Close game with Escape
         elif e.key() == Qt.Key_Escape:
             self.close()
 
-    #Create a new game
+    # Create a new game
     def newGame(self):
         # Index: 0 = tête
         self.snakeArray = [[self.x, self.y], [self.x - self.squareSize, self.y], [self.x - self.squareSize * 2, self.y]]
         self.lastKeyPress = 'RIGHT'
         self.score = 0
-        #Place the rocks
+        # Place the rocks
         if not self.rocksGenerated:
             self.generateRocks(self.rockNumber)
         self.start()
-
 
     def pause(self):
         self.isPaused = True
@@ -148,33 +151,37 @@ class Snake(QtWidgets.QWidget):
         self.timer.start(self.speed, self)
         self.update()
 
-    #Modifie la direction dans laquelle notre serpent va en fonction de notre derniere touche directionelle selectionné
-    #Et redessine notre serpent sur la grille
+    # Modifie la direction dans laquelle notre serpent va en fonction de notre derniere touche directionelle selectionné
+    # Et redessine notre serpent sur la grille
     def direction(self, dir):
-        if dir == "DOWN" and self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks):
+        if dir == "DOWN" and self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits,
+                                              self.rocks):
             self.y += self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "UP" and self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks):
+        elif dir == "UP" and self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits,
+                                              self.rocks):
             self.y -= self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "RIGHT" and self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks):
+        elif dir == "RIGHT" and self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits,
+                                                 self.rocks):
             self.x += self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
-        elif dir == "LEFT" and self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks):
+        elif dir == "LEFT" and self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits,
+                                                self.rocks):
             self.x -= self.squareSize
             self.repaint()
             self.snakeArray.insert(0, [self.x, self.y])
 
-    #Affiche le scoreboard
+    # Affiche le scoreboard
     def scoreBoard(self):
         self.qp.setPen(Qt.NoPen)
         self.qp.setBrush(QtGui.QColor(25, 80, 0, 160))
         self.qp.drawRect(0, 0, self.windowSize, self.squareSize)
 
-    #Affiche le score
+    # Affiche le score
     def scoreText(self, event):
         self.qp.setPen(QtGui.QColor(255, 255, 255))
         self.qp.setFont(QtGui.QFont('Arial', 10))
@@ -222,9 +229,9 @@ class Snake(QtWidgets.QWidget):
     def placeFood(self, snakeArray, fruits, rocks):
         if not fruits["food1_placed"]:
 
-            #Place the food number 1
+            # Place the food number 1
             fruits["food1_x"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
-            #Place the food number 2           
+            # Place the food number 2
             fruits["food1_y"] = randrange(1, int(self.windowSize / self.squareSize)) * self.squareSize
 
             # Make sure the food does not spawn on a rock
@@ -232,7 +239,7 @@ class Snake(QtWidgets.QWidget):
                 if fruits["food1_x"] == rock["x"] and fruits["food1_y"] == rock["y"]:
                     self.placeFood(snakeArray, fruits, rocks)
 
-            #Selectionne le type de nourriture de Food1, la pomme a 1/3 d'apparaitre, la Cerise 2/3
+            # Selectionne le type de nourriture de Food1, la pomme a 1/3 d'apparaitre, la Cerise 2/3
             rand = randrange(1, 3)
             if rand == 2:
                 fruits["food1_type"] = "Pomme"
@@ -248,7 +255,7 @@ class Snake(QtWidgets.QWidget):
             for rock in rocks:
                 if fruits["food2_x"] == rock["x"] and fruits["food2_y"] == rock["y"]:
                     self.placeFood(snakeArray, fruits, rocks)
-            #Selectionne le type de nourriture de Food2, la pomme a 1/3 d'apparaitre, la Cerise 2/3
+            # Selectionne le type de nourriture de Food2, la pomme a 1/3 d'apparaitre, la Cerise 2/3
             rand = randrange(1, 3)
             if rand == 2:
                 fruits["food2_type"] = "Pomme"
@@ -284,7 +291,7 @@ class Snake(QtWidgets.QWidget):
         else:
             QtWidgets.QFrame.timerEvent(self, event)
 
-    #Recupere le score associé a chacun des deux fruits
+    # Recupere le score associé a chacun des deux fruits
     def getScoreType(self, number):
         if number == 1:
             if self.fruits["food1_type"] == "Pomme":
@@ -297,7 +304,7 @@ class Snake(QtWidgets.QWidget):
             if self.fruits["food2_type"] == "Cerise":
                 return 5
 
-    #Renvoie la position de la nourriture la plus proche ainsi que la distance a laquelle la tete de notre serpent est de cette nourriture
+    # Renvoie la position de la nourriture la plus proche ainsi que la distance a laquelle la tete de notre serpent est de cette nourriture
     def getNearestFood(self):
         distFood1 = abs(self.fruits["food1_x"] - self.x) + abs(self.fruits["food1_y"] - self.y)
         distFood2 = abs(self.fruits["food2_x"] - self.x) + abs(self.fruits["food2_y"] - self.y)
@@ -329,7 +336,8 @@ class Snake(QtWidgets.QWidget):
                 new_array.pop()
 
             new_array.insert(0, [self.x + self.squareSize, self.y])
-            result.append(Snake(self.x + self.squareSize, self.y, new_array, new_score, self.rocks, new_fruits, False, False))
+            result.append(
+                Snake(self.x + self.squareSize, self.y, new_array, new_score, self.rocks, new_fruits, False, False))
 
         if self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks):
             new_array = copy.deepcopy(self.snakeArray)
@@ -351,7 +359,8 @@ class Snake(QtWidgets.QWidget):
                 new_array.pop()
 
             new_array.insert(0, [self.x - self.squareSize, self.y])
-            result.append(Snake(self.x - self.squareSize, self.y, new_array, new_score, self.rocks, new_fruits, False, False))
+            result.append(
+                Snake(self.x - self.squareSize, self.y, new_array, new_score, self.rocks, new_fruits, False, False))
 
         if self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks):
             new_array = copy.deepcopy(self.snakeArray)
@@ -373,7 +382,8 @@ class Snake(QtWidgets.QWidget):
                 new_array.pop()
 
             new_array.insert(0, [self.x, self.y + self.squareSize])
-            result.append(Snake(self.x, self.y + self.squareSize, new_array, new_score, self.rocks, new_fruits, False, False))
+            result.append(
+                Snake(self.x, self.y + self.squareSize, new_array, new_score, self.rocks, new_fruits, False, False))
 
         if self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks):
             new_array = copy.deepcopy(self.snakeArray)
@@ -394,7 +404,8 @@ class Snake(QtWidgets.QWidget):
                 new_array.pop()
 
             new_array.insert(0, [self.x, self.y - self.squareSize])
-            result.append(Snake(self.x, self.y - self.squareSize, new_array, new_score, self.rocks, new_fruits, False, False))
+            result.append(
+                Snake(self.x, self.y - self.squareSize, new_array, new_score, self.rocks, new_fruits, False, False))
 
         return result
 

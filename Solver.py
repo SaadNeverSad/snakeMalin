@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
 
@@ -18,7 +18,6 @@ class SearchNode:
 
     def isGoal(self):
         return self.snake.score > 10
-
 
 
 class Solver(QtWidgets.QWidget):
@@ -49,7 +48,8 @@ class Solver(QtWidgets.QWidget):
             nodeArray.pop(maxNodeIndex)
             nearestFood = current.snake.getNearestFood()
             print("Current position: " + str(current.snake.x) + ", " + str(current.snake.y))
-            print("Nearest food selected: " + str(nearestFood[2]) + " at position: " + str(nearestFood[0]) + ", " + str(nearestFood[1]))
+            print("Nearest food selected: " + str(nearestFood[2]) + " at position: " + str(nearestFood[0]) + ", " + str(
+                nearestFood[1]))
             print("Priority: " + str(current.priority) + " Score: " + str(current.snake.score))
             print("Snake: ")
             for block in current.snake.snakeArray:
@@ -66,7 +66,7 @@ class Solver(QtWidgets.QWidget):
         for next in current.snake.getNeighbors():
             if (current.parent is None) or (not next.equals(current.parent.snake)):
                 nearestFood = next.getNearestFood()
-                priority = ((1/(nearestFood[2]+1))) + next.score * 10000
+                priority = ((1 / (nearestFood[2] + 1))) + next.score * 10000
                 nodeArray.append(SearchNode(current, next, priority))
 
     def getSolution(self):
@@ -154,10 +154,10 @@ class Solver(QtWidgets.QWidget):
         self.qp.setBrush(QtGui.QColor(0, 80, 255, 255))
         tete = 0
         for i in self.snake.snakeArray:
-            if(tete == 0) :
+            if (tete == 0):
                 self.qp.setBrush(QtGui.QColor(255, 255, 255, 255))
                 tete = 1
-            else :
+            else:
                 self.qp.setBrush(QtGui.QColor(0, 80, 255, 255))
-            print("x : " + str(i[0]/self.snake.squareSize) +"\t y : " + str(i[1]/self.snake.squareSize))
+            print("x : " + str(i[0] / self.snake.squareSize) + "\t y : " + str(i[1] / self.snake.squareSize))
             self.qp.drawRect(i[0], i[1], self.snake.squareSize, self.snake.squareSize)

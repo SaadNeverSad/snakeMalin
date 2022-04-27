@@ -1,12 +1,10 @@
 #!/usr/bin/python
 import sys
-import time
 
 from PyQt5 import QtWidgets
 
 from Snake import Snake
 from Solver import Solver
-from Solver import SearchNode
 
 
 def main():
