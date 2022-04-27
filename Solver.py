@@ -73,27 +73,26 @@ class Solver(QtWidgets.QWidget):
         res = []
         current = self.solution
         while current is not None:
-            res.append(current.snake)
+            res.insert(0, current.snake)
             current = current.parent
-        print(res)
         return res
 
-    def initUI(self):
-        self.setStyleSheet("QWidget { background: #A9F5D0 }")
-        self.setFixedSize(self.initialSnake.windowSize, self.initialSnake.windowSize)
-        self.setWindowTitle('Snake')
-        self.show()
+    # def initUI(self):
+    #     self.setStyleSheet("QWidget { background: #A9F5D0 }")
+    #     self.setFixedSize(self.initialSnake.windowSize, self.initialSnake.windowSize)
+    #     self.setWindowTitle('Snake')
+    #     self.show()
 
-    def paintEvent(self, event):
-        self.qp.begin(self)
-        self.scoreBoard()
-        self.drawRocks()
-        self.drawFood()
-        self.drawSnake()
-        self.scoreText()
-        if self.initialSnake.isOver:
-            self.gameOver()
-        self.qp.end()
+    # def paintEvent(self, event):
+    #     self.qp.begin(self)
+    #     self.scoreBoard()
+    #     self.drawRocks()
+    #     self.drawFood()
+    #     self.drawSnake()
+    #     self.scoreText()
+    #     if self.initialSnake.isOver:
+    #         self.gameOver()
+    #     self.qp.end()
 
     def direction(self, dir):
         if dir == "DOWN" and self.snake.checkStatus(self.snake.x, self.snake.y + self.snake.squareSize):
@@ -159,5 +158,5 @@ class Solver(QtWidgets.QWidget):
                 tete = 1
             else:
                 self.qp.setBrush(QtGui.QColor(0, 80, 255, 255))
-            print("x : " + str(i[0] / self.snake.squareSize) + "\t y : " + str(i[1] / self.snake.squareSize))
+            #print("x : " + str(i[0] / self.snake.squareSize) + "\t y : " + str(i[1] / self.snake.squareSize))
             self.qp.drawRect(i[0], i[1], self.snake.squareSize, self.snake.squareSize)

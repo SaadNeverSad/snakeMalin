@@ -2,9 +2,11 @@
 import sys
 
 from PyQt5 import QtWidgets
+from time import sleep
 
 from Snake import Snake
 from Solver import Solver
+from GUI import GUI
 
 
 def main():
@@ -15,16 +17,10 @@ def main():
     # Solve it
     solver = Solver(ex)
 
-    print("Found solution !")
+    print("Found a solution !")
 
     sol = solver.getSolution()
-    solver.initUI()
-
-    print("Solution:")
-    print(sol)
-
-    for state in sol:
-        solver.snake = state
+    ui = GUI(sol)
 
     sys.exit(app.exec_())
 
