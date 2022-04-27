@@ -306,12 +306,16 @@ class Snake(QtWidgets.QWidget):
 
     # Renvoie la position de la nourriture la plus proche ainsi que la distance a laquelle la tete de notre serpent
     # est de cette nourriture
-    def getNearestFood(self):
+    def getNearestFood(self, is_stuck=False):
         distFood1 = abs(self.fruits["food1_x"] - self.x) + abs(self.fruits["food1_y"] - self.y)
         distFood2 = abs(self.fruits["food2_x"] - self.x) + abs(self.fruits["food2_y"] - self.y)
         if distFood1 < distFood2:
+            if is_stuck:
+                return [self.fruits["food1_x"], self.fruits["food1_y"], distFood2]
             return [self.fruits["food1_x"], self.fruits["food1_y"], distFood1]
         else:
+            if is_stuck:
+                return [self.fruits["food2_x"], self.fruits["food2_y"], distFood1]
             return [self.fruits["food2_x"], self.fruits["food2_y"], distFood2]
 
     def getNeighbors(self):

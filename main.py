@@ -11,8 +11,8 @@ from GUI import GUI
 
 def main(argv):
     # Default values
-    target_score = 20
-    play_speed = 10  # ms
+    target_score = 30
+    play_speed = 25  # ms
     debug = False
 
     # Get command line arguments
@@ -40,7 +40,6 @@ def main(argv):
 
     # Solve it
     solver = Solver(ex, target_score, debug)
-    print("Found a solution !")
     sol = solver.getSolution()
 
     # Create a GUI
