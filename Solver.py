@@ -1,3 +1,4 @@
+import colorama
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
@@ -33,11 +34,21 @@ class Solver(QtWidgets.QWidget):
         self.AStar()
         self.qp = QtGui.QPainter()
 
+    def progress_bar(self, progress, total, color=colorama.Fore.YELLOW):
+        percent = 100 * (progress / float(total))
+        bar = '█' * int(percent) + '-' * int(100 - int(percent))
+        print(color + f"\r|{bar}| {percent:.2f}%", end="\r")
+        if progress == total:
+            print(colorama.Fore.GREEN + f"\r|{bar}| {percent:.2f}%", end="\r")
+
     def AStar(self):
+        global best_score_yet  # global variable to keep track of the best score (for loading bar)
         startSearchN = SearchNode(None, self.initialSnake, 0, self.target)
         nodeArray = [startSearchN]
         current = nodeArray.pop()
+        best_score_yet = 0
         i = 0
+        self.progress_bar(best_score_yet, self.target)
         while not current.isGoal():
             self.addNext(nodeArray, current)
             max = 0
@@ -48,7 +59,12 @@ class Solver(QtWidgets.QWidget):
                     max = node.priority
                     maxNodeIndex = index
                 index += 1
+
             current = nodeArray[maxNodeIndex]
+            # update best_score_yet
+            if current.snake.score > best_score_yet:
+                best_score_yet = current.snake.score
+                self.progress_bar(best_score_yet, self.target)
             nodeArray.pop(maxNodeIndex)
             nearestFood = current.snake.getNearestFood()
             if self.debug:
@@ -64,8 +80,12 @@ class Solver(QtWidgets.QWidget):
                 self.solution = current
                 break
             i += 1
+
+
+
         if current.isGoal():
             self.solution = current
+            self.progress_bar(best_score_yet, self.target)
 
     def addNext(self, nodeArray, current):
         for next in current.snake.getNeighbors():
