@@ -98,7 +98,10 @@ class GUI(QtWidgets.QWidget):
 
     # game thread
     def timerEvent(self, event):
-        if not self.state == self.stateNb:
+        if self.state == self.stateNb - 1:
+            self.timer.stop()
+
+        else:
             if event.timerId() == self.timer.timerId():
                 self.nextState()
                 self.repaint()

@@ -23,7 +23,6 @@ def main():
     # Create a GUI
     play_speed = 10  # ms
     ui = GUI(sol, play_speed)
-
     sys.exit(app.exec_())
 
 
