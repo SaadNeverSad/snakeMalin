@@ -3,10 +3,11 @@ from PyQt5.QtCore import Qt
 
 
 class SearchNode:
-    def __init__(self, parent, snake, priority):
+    def __init__(self, parent, snake, priority, target):
         self.snake = snake
         self.priority = priority
         self.parent = parent
+        self.target = target
 
     def compareTo(self, otherSearchNode):
         if self.priority < otherSearchNode.priority:
@@ -17,20 +18,22 @@ class SearchNode:
             return 0
 
     def isGoal(self):
-        return self.snake.score > 10
+        return self.snake.score > self.target
 
 
 class Solver(QtWidgets.QWidget):
 
-    def __init__(self, snake):
+    def __init__(self, snake, target):
         super().__init__()
+        self.target = target
+
         self.initialSnake = snake
         self.solution = None
         self.AStar()
         self.qp = QtGui.QPainter()
 
     def AStar(self):
-        startSearchN = SearchNode(None, self.initialSnake, 0)
+        startSearchN = SearchNode(None, self.initialSnake, 0, self.target)
         nodeArray = [startSearchN]
         current = nodeArray.pop()
         i = 0
@@ -67,7 +70,7 @@ class Solver(QtWidgets.QWidget):
             if (current.parent is None) or (not next.equals(current.parent.snake)):
                 nearestFood = next.getNearestFood()
                 priority = ((1 / (nearestFood[2] + 1))) + next.score * 10000
-                nodeArray.append(SearchNode(current, next, priority))
+                nodeArray.append(SearchNode(current, next, priority, self.target))
 
     def getSolution(self):
         res = []

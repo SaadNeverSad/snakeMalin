@@ -15,12 +15,14 @@ def main():
     ex = Snake(-1, -1, -1, -1, -1, -1, True, False)
 
     # Solve it
-    solver = Solver(ex)
-
+    target_score = 20
+    solver = Solver(ex, target_score)
     print("Found a solution !")
-
     sol = solver.getSolution()
-    ui = GUI(sol)
+
+    # Create a GUI
+    play_speed = 10  # ms
+    ui = GUI(sol, play_speed)
 
     sys.exit(app.exec_())
 

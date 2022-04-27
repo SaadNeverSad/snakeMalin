@@ -3,14 +3,14 @@ from PyQt5.QtCore import Qt
 
 
 class GUI(QtWidgets.QWidget):
-    def __init__(self, snakes):
+    def __init__(self, snakes, speed):
         super(GUI, self).__init__()
 
         # Game parameters
         self.windowSize = 900  # size of the gui window, in pixel
         self.squareSize = 24  # size of one position, in pixel
         self.timer = QtCore.QBasicTimer()  # used to track the time
-        self.speed = 100  # length of the delay between each move in ms (lower --> faster)
+        self.speed = speed  # length of the delay between each move in ms (lower --> faster)
         self.highscore = 0
         self.state = 0
         self.stateNb = len(snakes)
