@@ -92,12 +92,12 @@ class Snake(QtWidgets.QWidget):
             self.gameOver(event)
         self.qp.end()
 
-        # Modifie la derniere touche directionelles selectionné, en interdisant de selectionné la touche inverse de la derniere selectionné
-        # ou applique une des trois fonctions pause (touche P), newGame (touche Space) ou  close (touche Escape)
+        # Modifie la derniere touche directionelles selectionné, en interdisant de selectionné la touche inverse de
+        # la derniere selectionné ou applique une des trois fonctions pause (touche P), newGame (touche Space) ou
+        # close (touche Escape)
 
     def keyPressEvent(self, e):
         if not self.isPaused:
-            # print "inflection point: ", self.x, " ", self.y
 
             # Fleche Haut
             if e.key() == Qt.Key_Up and self.lastKeyPress != 'UP' and self.lastKeyPress != 'DOWN':
@@ -304,7 +304,8 @@ class Snake(QtWidgets.QWidget):
             if self.fruits["food2_type"] == "Cerise":
                 return 5
 
-    # Renvoie la position de la nourriture la plus proche ainsi que la distance a laquelle la tete de notre serpent est de cette nourriture
+    # Renvoie la position de la nourriture la plus proche ainsi que la distance a laquelle la tete de notre serpent
+    # est de cette nourriture
     def getNearestFood(self):
         distFood1 = abs(self.fruits["food1_x"] - self.x) + abs(self.fruits["food1_y"] - self.y)
         distFood2 = abs(self.fruits["food2_x"] - self.x) + abs(self.fruits["food2_y"] - self.y)
@@ -324,13 +325,11 @@ class Snake(QtWidgets.QWidget):
                 new_fruits["food1_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
 
             elif self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
 
             else:
                 new_array.pop()
@@ -347,13 +346,11 @@ class Snake(QtWidgets.QWidget):
                 new_fruits["food1_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
 
             elif self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
 
             else:
                 new_array.pop()
@@ -370,13 +367,11 @@ class Snake(QtWidgets.QWidget):
                 new_fruits["food1_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
 
             elif self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
 
             else:
                 new_array.pop()
@@ -393,12 +388,10 @@ class Snake(QtWidgets.QWidget):
                 new_fruits["food1_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
             elif self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
                 new_score += 1
                 self.placeFood(new_array, new_fruits, self.rocks)
-                print("RACIIIIIIIIIIIIIIIIISME")
 
             else:
                 new_array.pop()
