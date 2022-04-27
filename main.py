@@ -14,10 +14,11 @@ def main(argv):
     target_score = 30
     play_speed = 25  # ms
     debug = False
+    recursion = 5000
 
     # Get command line arguments
     try:
-        opts, args = getopt.getopt(argv, "s:t:d", ["score=", "time=", "debug"])
+        opts, args = getopt.getopt(argv, "s:t:r:d", ["score=", "time=", "recursion=", "debug"])
 
     except getopt.GetoptError:
         print('main.py -s <target_score> -t <time_delay_between_each_move> (OPTIONAL : -d to debug the A* solver)')
@@ -32,6 +33,8 @@ def main(argv):
             play_speed = int(arg)
         elif opt in ("-d", "--debug"):
             debug = True
+        elif opt in ("-r", "--recursion"):
+            recursion = int(arg)
 
     # Create a snake game
     print("Generating a snake game with target score of " + str(target_score) + "...\n")
@@ -39,7 +42,7 @@ def main(argv):
     ex = Snake(-1, -1, -1, -1, -1, -1, True, False)
 
     # Solve it
-    solver = Solver(ex, target_score, debug)
+    solver = Solver(ex, target_score, debug, recursion)
     sol = solver.getSolution()
 
     # Create a GUI

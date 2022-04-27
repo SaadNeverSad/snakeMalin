@@ -24,10 +24,11 @@ class SearchNode:
 
 class Solver(QtWidgets.QWidget):
 
-    def __init__(self, snake, target, debug):
+    def __init__(self, snake, target, debug, recursion):
         super().__init__()
         self.target = target
         self.debug = debug
+        self.recursion = recursion
 
         self.initialSnake = snake
         self.solution = None
@@ -73,12 +74,12 @@ class Solver(QtWidgets.QWidget):
                 stuck += 1
 
                 # Solver is stuck with the closest food
-                if stuck == 5000 and not is_stuck:
+                if stuck == self.recursion and not is_stuck:
                     is_stuck = True  # set stuck to true so that the snake will not focus on the closest food
                     stuck = 0
 
                 # Solver is stuck with both the closest food and the furthest food
-                if stuck == 5000 and is_stuck:
+                if stuck == self.recursion and is_stuck:
                     print("\nSolver could not find a solution for this score on this map... :'(\n"
                           "Here's the best solution found so far (" + str(best_score_yet) + "):")
                     self.solution = current
