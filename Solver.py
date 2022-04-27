@@ -18,14 +18,15 @@ class SearchNode:
             return 0
 
     def isGoal(self):
-        return self.snake.score > self.target
+        return self.snake.score >= self.target
 
 
 class Solver(QtWidgets.QWidget):
 
-    def __init__(self, snake, target):
+    def __init__(self, snake, target, debug):
         super().__init__()
         self.target = target
+        self.debug = debug
 
         self.initialSnake = snake
         self.solution = None
@@ -50,14 +51,15 @@ class Solver(QtWidgets.QWidget):
             current = nodeArray[maxNodeIndex]
             nodeArray.pop(maxNodeIndex)
             nearestFood = current.snake.getNearestFood()
-            print("Current position: " + str(current.snake.x) + ", " + str(current.snake.y))
-            print("Nearest food selected: " + str(nearestFood[2]) + " at position: " + str(nearestFood[0]) + ", " + str(
-                nearestFood[1]))
-            print("Priority: " + str(current.priority) + " Score: " + str(current.snake.score))
-            print("Snake: ")
-            for block in current.snake.snakeArray:
-                print(str(block))
-            print("\n")
+            if self.debug:
+                print("Current position: " + str(current.snake.x) + ", " + str(current.snake.y))
+                print("Nearest food selected: " + str(nearestFood[2]) + " at position: " + str(nearestFood[0]) + ", " + str(
+                    nearestFood[1]))
+                print("Priority: " + str(current.priority) + " Score: " + str(current.snake.score))
+                print("Snake: ")
+                for block in current.snake.snakeArray:
+                    print(str(block))
+                print("\n")
             if i == 100000:
                 self.solution = current
                 break
