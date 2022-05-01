@@ -20,6 +20,7 @@ class Snake(QtWidgets.QWidget):
         self.lastKeyPress = 'RIGHT'  # initial direction taken by the snake
         self.safeZone = 15  # zone in which no rocks will be generated at spawn (number of positions)
         self.fruits = {}
+        self.moves = 0
 
         # Entities attributes
 
@@ -154,6 +155,7 @@ class Snake(QtWidgets.QWidget):
     # Modifie la direction dans laquelle notre serpent va en fonction de notre derniere touche directionelle selectionné
     # Et redessine notre serpent sur la grille
     def direction(self, dir):
+        self.moves +=1
         if dir == "DOWN" and self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits,
                                               self.rocks):
             self.y += self.squareSize
@@ -327,12 +329,18 @@ class Snake(QtWidgets.QWidget):
             new_score = copy.deepcopy(self.score)
             if self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 10:
                 new_fruits["food1_placed"] = False
-                new_score += 1
+                if self.fruits["food1_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
 
             elif self.checkStatus(self.x + self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
-                new_score += 1
+                if self.fruits["food2_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
 
             else:
@@ -348,12 +356,18 @@ class Snake(QtWidgets.QWidget):
             new_score = copy.deepcopy(self.score)
             if self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 10:
                 new_fruits["food1_placed"] = False
-                new_score += 1
+                if self.fruits["food1_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
 
             elif self.checkStatus(self.x - self.squareSize, self.y, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
-                new_score += 1
+                if self.fruits["food2_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
 
             else:
@@ -369,12 +383,18 @@ class Snake(QtWidgets.QWidget):
             new_score = copy.deepcopy(self.score)
             if self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks) == 10:
                 new_fruits["food1_placed"] = False
-                new_score += 1
+                if self.fruits["food1_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
 
             elif self.checkStatus(self.x, self.y + self.squareSize, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
-                new_score += 1
+                if self.fruits["food2_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
 
             else:
@@ -390,11 +410,17 @@ class Snake(QtWidgets.QWidget):
             new_score = copy.deepcopy(self.score)
             if self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks) == 10:
                 new_fruits["food1_placed"] = False
-                new_score += 1
+                if self.fruits["food1_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
             elif self.checkStatus(self.x, self.y - self.squareSize, self.snakeArray, self.fruits, self.rocks) == 20:
                 new_fruits["food2_placed"] = False
-                new_score += 1
+                if self.fruits["food2_type"] == "Pomme":
+                    new_score += 1
+                else:
+                    new_score += 5
                 self.placeFood(new_array, new_fruits, self.rocks)
 
             else:
@@ -414,6 +440,9 @@ class Snake(QtWidgets.QWidget):
 
     def get_fruits(self):
         return self.fruits
+
+    def get_moves(self):
+        return self.moves
 
     def equals(self, snake):
         return self.fruits == snake.fruits and self.x == snake.x and self.y == snake.y and self.rocks == snake.rocks and self.snakeArray == snake.snakeArray and self.score == snake.score
