@@ -1,7 +1,7 @@
 # SnakeMalin
 
 
-Trop malin ce snake!\
+Too smart this snake !\
 ⠀
 ⢀⡴⠑⡄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ \
 ⠸⡇⠀⠿⡀⠀⠀⠀⣀⡴⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀ \
@@ -20,29 +20,27 @@ Trop malin ce snake!\
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠻⠿⠿⠿⠿⠛⠉
 
 
-### Lancer le Snake ###
-Pour lancer le Snake, il faut exécuter la commande python3 main.py, mais nous possédons un ensemble de variables à ajouter pour modifier le fonctionnement de notre application :
+### Run the Snake ###
+To run the Snake, we need to run the python3 main.py command, but we have a set of variables to add to change the way our application works:
 
--s [score_max] sert à modifier le score maximum auquel on veut s'arrêter, plus le score est haut, plus notre Snake prendra du temps à calculer le chemin au début du lancement de l'application (nous expliquerons pourquoi plus tard)
+-s [score_max] is used to modify the maximum score at which we want to stop, the higher the score, the more time our Snake will take to calculate the path at the beginning of the application launch (we will explain why later)
 
--t [time_delay_between_each_move] sert à accelerer ou ralentir la vitesse de notre Snake, plus la valeur est petite, plus notre Snake sera rapide
+-t [time_delay_between_each_move] is used to accelerate or slow down the speed of our Snake, the smaller the value, the faster our Snake will be
 
--d sert a debugger notre serpent, cette option n'est pas obligatoire, elle à pour but d'afficher l'ensemble des position où va se déplacer notre Snake
+-d is used to debug our snake, this option is not mandatory, its purpose is to display all the positions where our snake will move
 
-Une commande d'exécution pourra donc ressembler à : python3 main.py -s 50 -t 10 -d
+A runtime command might look like : python3 main.py -s 50 -t 10 -d
 
-### Fonctionnement de notre IA ###
+### How our AI works ###
 
-Pour résoudre le Snake, nous utilisons l'algorithme A*, le principe est d'utiliser une valeur heuristique (distance de Manhattan entre notre tête et la nourriture), ainsi, notre algorithme ne prend pas uniquement en compte le point d'arrivée, mais aussi l'ensemble des possibilités déjà recherchées, utilisant la distance entre le point de départ et d'arrivés comme heuristique. Nous calculons ainsi l'ensemble des chemins possibles et nous retournons le meilleur (le plus court). Ce chemin est stocké sous la forme de tuple qui sont l'ensemble des positions dans laquelle il doit se déplacer, puis nous affichons le résultat. (expliquant le temps de chargement qui peut durer plusieurs secondes)
+To solve the Snake, we use the A* algorithm, the principle is to use a heuristic value (Manhattan distance between our head and the food), thus, our algorithm does not only take into account the arrival point, but also the set of possibilities already searched, using the distance between the departure and arrival points as a heuristic. We thus compute the set of possible paths and return the best (shortest) one. This path is stored in the form of tuples which are the set of positions in which it must move, then we display the result. (explaining the loading time which can last several seconds)
 
-Notre fonction Astar est disponible dans le ficher Solver.py
+Our Astar function is available in the file Solver.py
 
+Moreover, having added a food type, we make our AI choose the closest food
 
-De plus, ayant ajouté un type de nourriture, nous faisons en sorte que notre IA choisit la nourriture la plus proche
+### Addition made in the game ####
 
-
-### Ajout fait dans le jeu ####
-
-Pour augmenter la difficulté, nous avons ajouté la présence de mur, qui sont générés de manière aléatoire au début du jeu, et qui a pour but d'éviter que notre snake fassent uniquement des diagonales ou lignes droite pour atteindre la nourriture, comme il pourrait le faire s'il n'y avait pas de mur.
+To increase the difficulty, we have added the presence of walls, which are randomly generated at the beginning of the game, and which are intended to prevent our snake to make only diagonals or straight lines to reach the food, as it could do if there were no wall.
 
 
